@@ -1,5 +1,5 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -48,6 +48,19 @@
 
 :root {
   --radius: 0.625rem;
+
+  /* Custom LMS Colors - Figma Design */
+  --blue-primary: #2563eb;
+  --blue-hover: #1d4ed8;
+  --bg-gray: #f9fafb;
+  --text-dark: #111827;
+  --text-gray: #4b5563;
+  --text-light: #6b7280;
+  --border-gray: #e5e7eb;
+  --green-stat: #10b981;
+  --white: #ffffff;
+
+  /* Existing theme colors */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
