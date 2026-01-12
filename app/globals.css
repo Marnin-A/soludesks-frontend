@@ -50,15 +50,16 @@
   --radius: 0.625rem;
 
   /* Custom LMS Colors - Figma Design */
-  --blue-primary: #2563eb;
-  --blue-hover: #1d4ed8;
+  --blue-primary: #0a60e1;
+  --blue-light: #eaf3ff;
   --bg-gray: #f9fafb;
   --text-dark: #111827;
   --text-gray: #4b5563;
   --text-light: #6b7280;
-  --border-gray: #e5e7eb;
+  --border-gray: #f0f0f0;
   --green-stat: #10b981;
   --white: #ffffff;
+  --purple-primary: #d5bffd;
 
   /* Existing theme colors */
   --background: oklch(1 0 0);

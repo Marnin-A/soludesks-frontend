@@ -4,9 +4,9 @@ import { Course, Student, Lesson, DashboardStats, User } from '@/types';
 export const mockUser: User = {
   id: '1',
   name: 'Madison Greg',
-  email: 'madison.greg@example.com',
+  email: 'Madison.reertr@gmail.com',
   isAuthenticated: true,
-  avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Madison',
+  avatar: '/Avatar.png',
 };
 
 // Mock Dashboard Stats
