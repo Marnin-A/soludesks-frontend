@@ -46,6 +46,24 @@ export interface Lesson {
   section: string;
 }
 
+// Lesson Review Types
+export interface LessonReview {
+  id: string;
+  courseId: string;
+  lessonId: string;
+  name: string;
+  role: string;
+  city: string;
+  avatar?: string;
+  rating: number;
+  comment: string;
+  tags?: string[];
+  submittedAt: string;
+  highlight?: string;
+  attachments?: string[];
+  module?: string;
+}
+
 // Stats Types
 export interface DashboardStats {
   totalCourses: number;

@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Course, Student, Lesson, DashboardStats, User, PaginationData } from '@/types';
+import { Course, Student, Lesson, DashboardStats, User, PaginationData, LessonReview } from '@/types';
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Courses', 'Course', 'Stats', 'User', 'Applicants', 'Lessons'],
+  tagTypes: ['Courses', 'Course', 'Stats', 'User', 'Applicants', 'Lessons', 'Reviews'],
   endpoints: builder => ({
     // Get dashboard stats
     getStats: builder.query<DashboardStats, void>({
@@ -52,6 +52,13 @@ export const api = createApi({
       providesTags: (result, error, courseId) => [{ type: 'Lessons', id: courseId }],
     }),
 
+    // Get lesson reviews
+    getLessonReviews: builder.query<LessonReview[], { courseId: string; lessonId: string }>({
+      query: ({ courseId, lessonId }) => `/courses/${courseId}/lessons/${lessonId}/reviews`,
+      transformResponse: (response: { success: boolean; data: LessonReview[] }) => response.data,
+      providesTags: (result, error, { courseId, lessonId }) => [{ type: 'Reviews', id: `${courseId}-${lessonId}` }],
+    }),
+
     // Get user profile
     getUser: builder.query<User, void>({
       query: () => '/user',
@@ -82,5 +89,6 @@ export const {
   useGetApplicantsQuery,
   useGetLessonsQuery,
   useGetUserQuery,
+  useGetLessonReviewsQuery,
   useUpdateLessonCompletionMutation,
 } = api;

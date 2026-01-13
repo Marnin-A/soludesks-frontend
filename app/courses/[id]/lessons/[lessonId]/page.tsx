@@ -4,11 +4,60 @@ import { use, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { HiOutlinePlay, HiArrowLeft } from 'react-icons/hi';
+import { FaStar, FaRegStar, FaStarHalfAlt } from 'react-icons/fa';
 
-import { useGetCourseByIdQuery, useGetLessonsQuery, useUpdateLessonCompletionMutation } from '@/store/services/api';
-import { Lesson } from '@/types';
+import {
+  useGetCourseByIdQuery,
+  useGetLessonsQuery,
+  useGetLessonReviewsQuery,
+  useUpdateLessonCompletionMutation,
+} from '@/store/services/api';
+import { Lesson, LessonReview } from '@/types';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
 import Image from 'next/image';
+
+const feedbackHighlights = [
+  { label: 'Content quality', score: 4.9 },
+  { label: 'Instructor clarity', score: 4.8 },
+  { label: 'Real-world examples', score: 4.7 },
+  { label: 'Lesson pacing', score: 4.6 },
+];
+
+const feedbackKeywords = [
+  'Concise explanations',
+  'Practical prompts',
+  'Downloadable assets',
+  'Role-play videos',
+  'Stakeholder focus',
+  'Pacing & flow',
+];
+
+const reviewSortOptions = [
+  { value: 'recent', label: 'Most Recent' },
+  { value: 'highest', label: 'Highest Rated' },
+  { value: 'lowest', label: 'Lowest Rated' },
+];
+
+const calculateReviewStats = (reviews: LessonReview[]) => {
+  const total = reviews.length;
+  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
+  const counts: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+  reviews.forEach(review => {
+    const key = Math.round(review.rating);
+    counts[key] = (counts[key] || 0) + 1;
+  });
+
+  const distribution = [5, 4, 3, 2, 1].map(star => ({
+    star,
+    count: counts[star],
+    percent: total ? Math.round((counts[star] / total) * 100) : 0,
+  }));
+
+  return { total, average: total ? sum / total : 0, distribution };
+};
 
 interface LessonPageProps {
   params: Promise<{ id: string; lessonId: string }>;
@@ -19,6 +68,7 @@ export default function LessonPage({ params }: LessonPageProps) {
   const router = useRouter();
   const { data: course } = useGetCourseByIdQuery(courseId);
   const { data: lessons, isLoading } = useGetLessonsQuery(courseId);
+  const { data: lessonReviews = [], isLoading: reviewsLoading } = useGetLessonReviewsQuery({ courseId, lessonId });
   const [updateLessonCompletion, { isLoading: isUpdating }] = useUpdateLessonCompletionMutation();
 
   const currentLesson = lessons?.find(l => l.id === lessonId);
@@ -43,6 +93,49 @@ export default function LessonPage({ params }: LessonPageProps) {
 
   const [expandedSections, setExpandedSections] = useState<string[]>(initialExpandedSection);
   const [activeTab, setActiveTab] = useState<'content' | 'reviews'>('content');
+  const [reviewSearch, setReviewSearch] = useState('');
+  const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const [sortBy, setSortBy] = useState<'recent' | 'highest' | 'lowest'>('recent');
+
+  const reviewStats = useMemo(() => calculateReviewStats(lessonReviews), [lessonReviews]);
+
+  const filteredReviews = useMemo(() => {
+    let filtered = lessonReviews;
+
+    if (selectedRating) {
+      filtered = filtered.filter(review => Math.round(review.rating) === selectedRating);
+    }
+
+    if (reviewSearch.trim()) {
+      const term = reviewSearch.toLowerCase();
+      filtered = filtered.filter(review => {
+        const matchesText =
+          review.comment.toLowerCase().includes(term) ||
+          review.name.toLowerCase().includes(term) ||
+          review.role.toLowerCase().includes(term) ||
+          review.city.toLowerCase().includes(term);
+        const matchesTag = review.tags?.some(tag => tag.toLowerCase().includes(term));
+        return matchesText || matchesTag;
+      });
+    }
+
+    return [...filtered].sort((a, b) => {
+      if (sortBy === 'highest') return b.rating - a.rating;
+      if (sortBy === 'lowest') return a.rating - b.rating;
+      return new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime();
+    });
+  }, [reviewSearch, selectedRating, sortBy]);
+
+  const renderStars = (value: number) =>
+    Array.from({ length: 5 }).map((_, index) => {
+      const starValue = index + 1;
+      if (value >= starValue) return <FaStar key={starValue} className="h-4 w-4 text-amber-400" />;
+      if (value > index && value < starValue) return <FaStarHalfAlt key={starValue} className="h-4 w-4 text-amber-400" />;
+      return <FaRegStar key={starValue} className="h-4 w-4 text-amber-300" />;
+    });
+
+  const formatDate = (dateString: string) =>
+    new Date(dateString).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev => (prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]));
@@ -169,6 +262,207 @@ export default function LessonPage({ params }: LessonPageProps) {
                   >
                     {isUpdating ? 'Updating...' : currentLesson?.isCompleted ? 'Next Lesson' : 'Mark as Completed'}
                   </Button>
+                </div>
+              </div>
+            )}
+            {activeTab === 'reviews' && (
+              <div className="space-y-6">
+                {reviewsLoading ? (
+                  <div className="rounded-xl border border-gray-100 bg-white shadow-sm">
+                    <div className="h-32 animate-pulse rounded-t-xl bg-gray-100" />
+                    <div className="p-6 space-y-3">
+                      <div className="h-4 w-2/3 animate-pulse rounded bg-gray-100" />
+                      <div className="h-4 w-1/2 animate-pulse rounded bg-gray-100" />
+                      <div className="h-4 w-full animate-pulse rounded bg-gray-100" />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-gray-100 bg-white shadow-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-gray-100 px-6 py-5">
+                    <div>
+                      <p className="text-xs uppercase tracking-wide text-gray-500">Overall satisfaction</p>
+                      <div className="mt-2 flex items-end gap-3">
+                        <span className="text-4xl font-bold text-gray-900">{reviewStats.average.toFixed(1)}</span>
+                        <div className="mb-1 flex items-center gap-1">{renderStars(reviewStats.average)}</div>
+                      </div>
+                      <p className="text-xs text-gray-500">Based on {reviewStats.total} responses</p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <div className="w-64">
+                        <Input
+                          placeholder="Search feedback"
+                          value={reviewSearch}
+                          onChange={e => setReviewSearch(e.target.value)}
+                          icon={<Image src="/icons/search-normal.svg" alt="search" width={18} height={18} />}
+                          iconPosition="right"
+                          className="rounded-full"
+                        />
+                      </div>
+                      <Select
+                        options={reviewSortOptions}
+                        value={sortBy}
+                        onChange={value => setSortBy(value as 'recent' | 'highest' | 'lowest')}
+                        className="rounded-full pr-9"
+                      />
+                      <div className="flex flex-wrap items-center gap-2">
+                        {[5, 4, 3, 2, 1].map(rating => (
+                          <button
+                            key={rating}
+                            onClick={() => setSelectedRating(prev => (prev === rating ? null : rating))}
+                            className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                              selectedRating === rating
+                                ? 'border-[var(--blue-primary-alpha)] bg-blue-50 text-[var(--blue-primary-alpha)]'
+                                : 'border-gray-200 text-gray-600 hover:border-[var(--blue-primary-alpha)]/50'
+                            }`}
+                          >
+                            {rating}★
+                          </button>
+                        ))}
+                        <button
+                          onClick={() => setSelectedRating(null)}
+                          className="rounded-full border border-gray-200 px-3 py-1.5 text-xs font-semibold text-gray-600 hover:border-[var(--blue-primary-alpha)]/50"
+                        >
+                          All
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-6 px-6 py-6 lg:grid-cols-3">
+                    <div className="rounded-lg border border-gray-100 bg-blue-50/60 p-4">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-sm font-semibold text-gray-900">Rating breakdown</p>
+                          <p className="text-xs text-gray-500">Distribution across the course</p>
+                        </div>
+                        <span className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-gray-700 shadow-sm">
+                          {reviewStats.total} reviews
+                        </span>
+                      </div>
+                      <div className="mt-4 space-y-3">
+                        {reviewStats.distribution.map(item => (
+                          <div key={item.star} className="flex items-center gap-3">
+                            <div className="flex w-14 items-center justify-between text-xs font-semibold text-gray-700">
+                              <span>{item.star}</span>
+                              <FaStar className="h-4 w-4 text-amber-400" />
+                            </div>
+                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-white shadow-inner">
+                              <div
+                                className="h-full rounded-full bg-[var(--blue-primary-alpha)]"
+                                style={{ width: `${item.percent}%` }}
+                              />
+                            </div>
+                            <span className="w-12 text-right text-xs font-medium text-gray-600">{item.percent}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-[0_1px_6px_rgba(16,24,40,0.05)]">
+                      <p className="text-sm font-semibold text-gray-900">Feedback focus</p>
+                      <p className="text-xs text-gray-500">How each area performed</p>
+                      <div className="mt-4 space-y-3">
+                        {feedbackHighlights.map(item => (
+                          <div key={item.label} className="space-y-1.5">
+                            <div className="flex items-center justify-between text-xs font-medium text-gray-700">
+                              <span>{item.label}</span>
+                              <span>{item.score.toFixed(1)}</span>
+                            </div>
+                            <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+                              <div
+                                className="h-full rounded-full bg-[linear-gradient(90deg,#0A60E1,#7EB6FF)]"
+                                style={{ width: `${(item.score / 5) * 100}%` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg border border-gray-100 bg-white p-4 shadow-[0_1px_6px_rgba(16,24,40,0.05)]">
+                      <p className="text-sm font-semibold text-gray-900">Top keywords</p>
+                      <p className="text-xs text-gray-500">Themes learners mention most</p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {feedbackKeywords.map(keyword => (
+                          <span
+                            key={keyword}
+                            className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-[var(--blue-primary-alpha)]"
+                          >
+                            {keyword}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  {filteredReviews.map(review => (
+                    <div
+                      key={review.id}
+                      className="rounded-xl border border-gray-100 bg-white p-5 shadow-[0_1px_6px_rgba(16,24,40,0.05)]"
+                    >
+                      <div className="flex flex-wrap items-start justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                          <div className="relative h-12 w-12 overflow-hidden rounded-full bg-gray-100">
+                            {review.avatar ? (
+                              <Image src={review.avatar} alt={review.name} fill className="object-cover" />
+                            ) : (
+                              <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-gray-600">
+                                {review.name.charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-gray-900">{review.name}</p>
+                            <p className="text-xs text-gray-500">
+                              {review.role} · {review.city}
+                            </p>
+                            {review.highlight && <p className="text-xs text-[var(--blue-primary-alpha)]">{review.highlight}</p>}
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <div className="flex items-center gap-1">{renderStars(review.rating)}</div>
+                            <span className="text-sm font-semibold text-gray-900">{review.rating.toFixed(1)}</span>
+                          </div>
+                          <p className="text-xs text-gray-500">{formatDate(review.submittedAt)}</p>
+                        </div>
+                      </div>
+                      <p className="mt-4 text-sm leading-relaxed text-gray-700">{review.comment}</p>
+                      {review.tags && review.tags.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {review.tags.map(tag => (
+                            <span
+                              key={tag}
+                              className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-700"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {review.attachments && review.attachments.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-3">
+                          {review.attachments.map(file => (
+                            <div
+                              key={file}
+                              className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-medium text-gray-700"
+                            >
+                              <Image src="/file.svg" alt="file" width={16} height={16} className="h-4 w-4" />
+                              <span className="truncate">{file}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {filteredReviews.length === 0 && (
+                    <div className="rounded-xl border border-gray-100 bg-white p-6 text-center text-sm text-gray-600 shadow-sm">
+                      No feedback matches your filters yet.
+                    </div>
+                  )}
                 </div>
               </div>
             )}

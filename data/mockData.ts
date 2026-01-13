@@ -1,4 +1,4 @@
-import { Course, Student, Lesson, DashboardStats, User } from '@/types';
+import { Course, Student, Lesson, DashboardStats, User, LessonReview } from '@/types';
 
 // Mock User Data
 export const mockUser: User = {
@@ -361,5 +361,101 @@ export const mockLessons: Lesson[] = [
     isCompleted: false,
     section: 'Getting Started',
     content: 'Content for pre-course assessment...',
+  },
+];
+
+// Mock Lesson Reviews
+export const mockLessonReviews: LessonReview[] = [
+  {
+    id: 'r1',
+    courseId: '1',
+    lessonId: '1',
+    name: 'Nithya Menon',
+    role: 'Product Manager',
+    city: 'New York',
+    avatar: '/people/Nithya-Menon.png',
+    rating: 4.9,
+    comment:
+      'Loved how actionable the exercises were. The pacing felt natural and the examples mirrored real situations I face with my team.',
+    tags: ['Actionable tips', 'Great pacing', 'Real scenarios'],
+    submittedAt: '2024-11-12',
+    highlight: 'Completed Module 3',
+    attachments: ['meeting-script.pdf'],
+  },
+  {
+    id: 'r2',
+    courseId: '1',
+    lessonId: '1',
+    name: 'Meera Gonzalez',
+    role: 'Operations Lead',
+    city: 'Toronto',
+    avatar: '/people/Meera-Gonzalez.png',
+    rating: 4.8,
+    comment:
+      'Instructor explanations are clear and concise. The downloadable worksheets helped me coach my direct reports better.',
+    tags: ['Clear explanation', 'Helpful resources'],
+    submittedAt: '2024-11-04',
+    highlight: 'Worksheet applied to weekly sync',
+    attachments: ['coaching-worksheet.pdf'],
+  },
+  {
+    id: 'r3',
+    courseId: '1',
+    lessonId: '1',
+    name: 'Jagathesh Narayanan',
+    role: 'Team Lead',
+    city: 'Berlin',
+    avatar: '/people/Jagathesh-Narayanan.png',
+    rating: 4.7,
+    comment:
+      'Strong focus on structure and tone. The role-play clips were especially useful and I replayed them a couple of times.',
+    tags: ['Role-play', 'Tone & structure'],
+    submittedAt: '2024-10-28',
+    highlight: 'Rewatched role-play clips',
+  },
+  {
+    id: 'r4',
+    courseId: '1',
+    lessonId: '1',
+    name: 'Monica Patel',
+    role: 'Customer Success',
+    city: 'Paris',
+    avatar: '/people/Monica-Patel.png',
+    rating: 4.6,
+    comment:
+      'Course layout is intuitive. Would love a few more examples for dealing with tough stakeholders but overall excellent.',
+    tags: ['Layout', 'Stakeholder comms'],
+    submittedAt: '2024-10-16',
+    highlight: 'Used in QBR prep',
+  },
+  {
+    id: 'r5',
+    courseId: '1',
+    lessonId: '1',
+    name: 'Dinesh Kumar',
+    role: 'Engineering Manager',
+    city: 'Tokyo',
+    avatar: '/people/Dinesh-Kumar.png',
+    rating: 4.8,
+    comment:
+      'Short chapters keep attention high. I shared the feedback checklist with my team and saw immediate improvement.',
+    tags: ['Short chapters', 'Feedback checklist'],
+    submittedAt: '2024-09-29',
+    highlight: 'Shared checklist with squad',
+  },
+  {
+    id: 'r6',
+    courseId: '1',
+    lessonId: '1',
+    name: 'Madison Greg',
+    role: 'People Partner',
+    city: 'London',
+    avatar: '/Avatar.png',
+    rating: 4.9,
+    comment:
+      'Exactly matches the communication tone we use internally. The templates are polished and easy to adapt for onboarding.',
+    tags: ['Templates', 'Great tone match'],
+    submittedAt: '2024-09-10',
+    highlight: 'Onboarding template adopted',
   },
 ];
