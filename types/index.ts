@@ -33,6 +33,8 @@ export interface Student {
 }
 
 // Lesson Types
+export type LessonType = 'content' | 'quiz';
+
 export interface Lesson {
   id: string;
   courseId: string;
@@ -44,6 +46,38 @@ export interface Lesson {
   isCompleted: boolean;
   content: string;
   section: string;
+  type?: LessonType;
+  quizId?: string;
+}
+
+// Quiz Types
+export type QuestionType = 'multiple_choice' | 'short_answer';
+
+export interface QuizOption {
+  id: string;
+  label: string;
+  text: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  type: QuestionType;
+  question: string;
+  points: number;
+  options?: QuizOption[];
+  correctAnswer?: string;
+}
+
+export interface Quiz {
+  id: string;
+  lessonId: string;
+  courseId: string;
+  title: string;
+  description: string;
+  questions: QuizQuestion[];
+  totalPoints: number;
+  passingScore: number;
+  timeLimit?: number;
 }
 
 // Stats Types

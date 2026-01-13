@@ -1,0 +1,71 @@
+'use client';
+
+import { useState } from 'react';
+import { Quiz } from '@/types';
+import { QuizQuestion } from './QuizQuestion';
+import { Button } from './Button';
+
+interface QuizViewProps {
+  quiz: Quiz;
+  onSubmit?: (answers: Record<string, string>) => void;
+}
+
+export function QuizView({ quiz, onSubmit }: QuizViewProps) {
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+
+  const handleAnswerChange = (questionId: string, answer: string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: answer,
+    }));
+  };
+
+  const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit(answers);
+    } else {
+      // Default behavior: log answers
+      console.log('Quiz submitted:', answers);
+      alert('Quiz submitted successfully!');
+    }
+  };
+
+  const answeredCount = Object.keys(answers).filter(key => answers[key]?.trim()).length;
+  const totalQuestions = quiz.questions.length;
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+      {/* Quiz Header */}
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-lg font-bold text-gray-900">{quiz.title}</h2>
+        <p className="text-sm text-gray-500 mt-1">
+          {answeredCount} of {totalQuestions} questions answered • {quiz.totalPoints} total points
+        </p>
+      </div>
+
+      {/* Questions */}
+      <div className="p-6">
+        {quiz.questions.map((question, index) => (
+          <QuizQuestion
+            key={question.id}
+            question={question}
+            questionNumber={index + 1}
+            onAnswerChange={handleAnswerChange}
+            selectedAnswer={answers[question.id]}
+          />
+        ))}
+      </div>
+
+      {/* Submit Button */}
+      <div className="p-6 border-t border-gray-200 flex justify-center">
+        <Button
+          onClick={handleSubmit}
+          className="px-16 py-3 rounded-full"
+          variant="outline"
+        >
+          Submit
+        </Button>
+      </div>
+    </div>
+  );
+}

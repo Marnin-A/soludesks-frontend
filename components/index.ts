@@ -7,6 +7,8 @@ export { Button } from './ui/Button';
 export { CourseCard } from './ui/CourseCard';
 export { Input } from './ui/Input';
 export { Pagination } from './ui/Pagination';
+export { QuizQuestion } from './ui/QuizQuestion';
+export { QuizView } from './ui/QuizView';
 export { RatingDistribution } from './ui/RatingDistribution';
 export { ReviewCard } from './ui/ReviewCard';
 export { Select } from './ui/Select';

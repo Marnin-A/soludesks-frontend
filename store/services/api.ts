@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Course, Student, Lesson, DashboardStats, User, PaginationData, Review, ReviewStats } from '@/types';
+import { Course, Student, Lesson, DashboardStats, User, PaginationData, Review, ReviewStats, Quiz } from '@/types';
 
 export const api = createApi({
   reducerPath: 'api',
@@ -86,6 +86,12 @@ export const api = createApi({
       transformResponse: (response: { success: boolean; data: { reviews: Review[]; stats: ReviewStats } }) =>
         response.data,
     }),
+
+    // Get quiz by ID
+    getQuiz: builder.query<Quiz, { courseId: string; quizId: string }>({
+      query: ({ courseId, quizId }) => `/courses/${courseId}/quiz/${quizId}`,
+      transformResponse: (response: { success: boolean; data: Quiz }) => response.data,
+    }),
   }),
 });
 
@@ -98,4 +104,5 @@ export const {
   useGetUserQuery,
   useUpdateLessonCompletionMutation,
   useGetReviewsQuery,
+  useGetQuizQuery,
 } = api;

@@ -10,11 +10,13 @@ import {
   useGetLessonsQuery,
   useUpdateLessonCompletionMutation,
   useGetReviewsQuery,
+  useGetQuizQuery,
 } from '@/store/services/api';
 import { Lesson } from '@/types';
 import { Button } from '@/components/ui/Button';
 import { ReviewCard } from '@/components/ui/ReviewCard';
 import { RatingDistribution } from '@/components/ui/RatingDistribution';
+import { QuizView } from '@/components/ui/QuizView';
 import Image from 'next/image';
 
 interface LessonPageProps {
@@ -30,6 +32,12 @@ export default function LessonPage({ params }: LessonPageProps) {
   const { data: reviewsData, isLoading: reviewsLoading } = useGetReviewsQuery({ courseId, lessonId });
 
   const currentLesson = lessons?.find(l => l.id === lessonId);
+  const isQuizLesson = currentLesson?.type === 'quiz';
+  
+  const { data: quizData, isLoading: quizLoading } = useGetQuizQuery(
+    { courseId, quizId: currentLesson?.quizId || '' },
+    { skip: !isQuizLesson || !currentLesson?.quizId }
+  );
   const totalLessons = lessons?.length || 0;
   const completedLessons = lessons?.filter(l => l.isCompleted).length || 0;
 
@@ -110,116 +118,201 @@ export default function LessonPage({ params }: LessonPageProps) {
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
           <div className="mx-auto max-w-4xl">
-            {/* Video Player */}
-            <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-xl bg-gray-900 shadow-lg">
-              {currentLesson?.videoUrl ? (
-                <iframe
-                  src={currentLesson.videoUrl}
-                  className="h-full w-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center">
-                  <div className="text-center">
-                    <HiOutlinePlay className="mx-auto h-16 w-16 text-gray-400" />
-                    <p className="mt-2 text-gray-400">Video content coming soon</p>
+            {/* Show Quiz or Regular Lesson Content */}
+            {isQuizLesson ? (
+              // Quiz Content
+              <>
+                {/* Tabs */}
+                <div className="mb-6 border-b border-gray-200">
+                  <div className="flex gap-8">
+                    <button
+                      onClick={() => setActiveTab('content')}
+                      className={`pb-3 text-sm font-semibold transition-colors ${
+                        activeTab === 'content'
+                          ? 'border-b-2 border-blue-600 text-blue-600'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Course Content
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('reviews')}
+                      className={`pb-3 text-sm font-semibold transition-colors ${
+                        activeTab === 'reviews'
+                          ? 'border-b-2 border-blue-600 text-blue-600'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Review/Feedbacks
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
 
-            {/* Tabs */}
-            <div className="mb-6 border-b border-gray-200">
-              <div className="flex gap-8">
-                <button
-                  onClick={() => setActiveTab('content')}
-                  className={`pb-3 text-sm font-semibold transition-colors ${
-                    activeTab === 'content'
-                      ? 'border-b-2 border-blue-600 text-blue-600'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Course Content
-                </button>
-                <button
-                  onClick={() => setActiveTab('reviews')}
-                  className={`pb-3 text-sm font-semibold transition-colors ${
-                    activeTab === 'reviews'
-                      ? 'border-b-2 border-blue-600 text-blue-600'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Review/Feedbacks
-                </button>
-              </div>
-            </div>
+                {activeTab === 'content' && (
+                  quizLoading ? (
+                    <div className="space-y-4">
+                      <div className="h-32 animate-pulse rounded-xl bg-gray-200" />
+                      <div className="h-48 animate-pulse rounded-xl bg-gray-200" />
+                      <div className="h-48 animate-pulse rounded-xl bg-gray-200" />
+                    </div>
+                  ) : quizData ? (
+                    <QuizView quiz={quizData} />
+                  ) : (
+                    <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+                      <p className="text-gray-500">Quiz not found</p>
+                    </div>
+                  )
+                )}
 
-            {/* Content */}
-            {activeTab === 'content' && (
-              <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
-                <h2 className="py-5 font-bold text-gray-900 px-6">
-                  Lesson {currentLesson?.order} - {currentLesson?.title}
-                </h2>
-                <div className="h-px mb-5 w-full bg-gray-200" />
-                <div
-                  className="text-gray-600 leading-relaxed px-6 pb-[4.5rem]"
-                  dangerouslySetInnerHTML={{ __html: currentLesson?.content || '' }}
-                />
-                <div className="w-full flex justify-end pb-6 pr-5">
-                  <Button
-                    variant="outline"
-                    className={`border-blue-primary px-12 ${
-                      currentLesson?.isCompleted ? 'bg-blue-primary text-white' : ''
-                    }`}
-                    onClick={currentLesson?.isCompleted ? handleNextLesson : handleMarkComplete}
-                    disabled={isUpdating}
-                  >
-                    {isUpdating ? 'Updating...' : currentLesson?.isCompleted ? 'Next Lesson' : 'Mark as Completed'}
-                  </Button>
-                </div>
-              </div>
-            )}
+                {activeTab === 'reviews' && (
+                  <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
+                    <h2 className="py-5 font-bold text-gray-900 px-6">Reviews & Feedbacks</h2>
+                    <div className="h-px w-full bg-gray-200" />
 
-            {/* Reviews/Feedbacks */}
-            {activeTab === 'reviews' && (
-              <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
-                <h2 className="py-5 font-bold text-gray-900 px-6">Reviews & Feedbacks</h2>
-                <div className="h-px w-full bg-gray-200" />
-
-                {reviewsLoading ? (
-                  <div className="p-6 space-y-4">
-                    <div className="h-32 animate-pulse rounded-xl bg-gray-100" />
-                    <div className="h-24 animate-pulse rounded bg-gray-100" />
-                    <div className="h-24 animate-pulse rounded bg-gray-100" />
+                    {reviewsLoading ? (
+                      <div className="p-6 space-y-4">
+                        <div className="h-32 animate-pulse rounded-xl bg-gray-100" />
+                        <div className="h-24 animate-pulse rounded bg-gray-100" />
+                      </div>
+                    ) : (
+                      <div className="p-6">
+                        {reviewsData?.stats && <RatingDistribution stats={reviewsData.stats} />}
+                        <div className="mt-6">
+                          <h3 className="font-semibold text-gray-900 mb-2">
+                            Student Reviews ({reviewsData?.reviews?.length || 0})
+                          </h3>
+                          {reviewsData?.reviews && reviewsData.reviews.length > 0 ? (
+                            <div className="divide-y divide-gray-100">
+                              {reviewsData.reviews.map(review => (
+                                <ReviewCard key={review.id} review={review} />
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="py-12 text-center text-gray-500">
+                              <p>No reviews yet for this quiz.</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                ) : (
-                  <div className="p-6">
-                    {/* Rating Distribution */}
-                    {reviewsData?.stats && <RatingDistribution stats={reviewsData.stats} />}
+                )}
+              </>
+            ) : (
+              // Regular Lesson Content
+              <>
+                {/* Video Player */}
+                <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-xl bg-gray-900 shadow-lg">
+                  {currentLesson?.videoUrl ? (
+                    <iframe
+                      src={currentLesson.videoUrl}
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center">
+                      <div className="text-center">
+                        <HiOutlinePlay className="mx-auto h-16 w-16 text-gray-400" />
+                        <p className="mt-2 text-gray-400">Video content coming soon</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
-                    {/* Reviews List */}
-                    <div className="mt-6">
-                      <h3 className="font-semibold text-gray-900 mb-2">
-                        Student Reviews ({reviewsData?.reviews?.length || 0})
-                      </h3>
+                {/* Tabs */}
+                <div className="mb-6 border-b border-gray-200">
+                  <div className="flex gap-8">
+                    <button
+                      onClick={() => setActiveTab('content')}
+                      className={`pb-3 text-sm font-semibold transition-colors ${
+                        activeTab === 'content'
+                          ? 'border-b-2 border-blue-600 text-blue-600'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Course Content
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('reviews')}
+                      className={`pb-3 text-sm font-semibold transition-colors ${
+                        activeTab === 'reviews'
+                          ? 'border-b-2 border-blue-600 text-blue-600'
+                          : 'text-gray-500 hover:text-gray-700'
+                      }`}
+                    >
+                      Review/Feedbacks
+                    </button>
+                  </div>
+                </div>
 
-                      {reviewsData?.reviews && reviewsData.reviews.length > 0 ? (
-                        <div className="divide-y divide-gray-100">
-                          {reviewsData.reviews.map(review => (
-                            <ReviewCard key={review.id} review={review} />
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="py-12 text-center text-gray-500">
-                          <p>No reviews yet for this lesson.</p>
-                          <p className="text-sm mt-1">Be the first to leave a review!</p>
-                        </div>
-                      )}
+                {/* Content */}
+                {activeTab === 'content' && (
+                  <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
+                    <h2 className="py-5 font-bold text-gray-900 px-6">
+                      Lesson {currentLesson?.order} - {currentLesson?.title}
+                    </h2>
+                    <div className="h-px mb-5 w-full bg-gray-200" />
+                    <div
+                      className="text-gray-600 leading-relaxed px-6 pb-[4.5rem]"
+                      dangerouslySetInnerHTML={{ __html: currentLesson?.content || '' }}
+                    />
+                    <div className="w-full flex justify-end pb-6 pr-5">
+                      <Button
+                        variant="outline"
+                        className={`border-blue-primary px-12 ${
+                          currentLesson?.isCompleted ? 'bg-blue-primary text-white' : ''
+                        }`}
+                        onClick={currentLesson?.isCompleted ? handleNextLesson : handleMarkComplete}
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? 'Updating...' : currentLesson?.isCompleted ? 'Next Lesson' : 'Mark as Completed'}
+                      </Button>
                     </div>
                   </div>
                 )}
-              </div>
+
+                {/* Reviews/Feedbacks */}
+                {activeTab === 'reviews' && (
+                  <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
+                    <h2 className="py-5 font-bold text-gray-900 px-6">Reviews & Feedbacks</h2>
+                    <div className="h-px w-full bg-gray-200" />
+
+                    {reviewsLoading ? (
+                      <div className="p-6 space-y-4">
+                        <div className="h-32 animate-pulse rounded-xl bg-gray-100" />
+                        <div className="h-24 animate-pulse rounded bg-gray-100" />
+                        <div className="h-24 animate-pulse rounded bg-gray-100" />
+                      </div>
+                    ) : (
+                      <div className="p-6">
+                        {/* Rating Distribution */}
+                        {reviewsData?.stats && <RatingDistribution stats={reviewsData.stats} />}
+
+                        {/* Reviews List */}
+                        <div className="mt-6">
+                          <h3 className="font-semibold text-gray-900 mb-2">
+                            Student Reviews ({reviewsData?.reviews?.length || 0})
+                          </h3>
+
+                          {reviewsData?.reviews && reviewsData.reviews.length > 0 ? (
+                            <div className="divide-y divide-gray-100">
+                              {reviewsData.reviews.map(review => (
+                                <ReviewCard key={review.id} review={review} />
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="py-12 text-center text-gray-500">
+                              <p>No reviews yet for this lesson.</p>
+                              <p className="text-sm mt-1">Be the first to leave a review!</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -233,54 +326,70 @@ export default function LessonPage({ params }: LessonPageProps) {
           </div>
 
           <div className="">
-            {Object.entries(sections).map(([sectionName, sectionLessons]) => (
-              <div key={sectionName} className="border-b border-gray-100 last:border-0">
-                <button
-                  onClick={() => toggleSection(sectionName)}
-                  className="flex w-full items-center justify-between px-4 py-4 hover:bg-gray-50 transition-colors"
-                >
-                  <span className="font-semibold text-sm text-gray-800">{sectionName}</span>
-                  {expandedSections.includes(sectionName) ? (
-                    <Image src="/icons/arrow-up.svg" alt="Up" className="h-5 w-5" width={24} height={24} />
-                  ) : (
-                    <Image src="/icons/arrow-down.svg" alt="Down" className="h-5 w-5" width={24} height={24} />
-                  )}
-                </button>
+            {Object.entries(sections).map(([sectionName, sectionLessons]) => {
+              const sectionCompleted = sectionLessons.every(l => l.isCompleted);
+              const isExpanded = expandedSections.includes(sectionName);
+              
+              return (
+                <div key={sectionName} className="border-b border-gray-100 last:border-0">
+                  <button
+                    onClick={() => toggleSection(sectionName)}
+                    className="flex w-full items-center justify-between px-4 py-4 hover:bg-gray-50 transition-colors"
+                  >
+                    <span className="font-semibold text-sm text-gray-800">{sectionName}</span>
+                    <div className="flex items-center gap-2">
+                      {sectionCompleted && (
+                        <Image
+                          src="/icons/tick-circle.svg"
+                          alt="Section Completed"
+                          className="h-5 w-5"
+                          width={20}
+                          height={20}
+                        />
+                      )}
+                      {isExpanded ? (
+                        <Image src="/icons/arrow-up.svg" alt="Up" className="h-5 w-5" width={24} height={24} />
+                      ) : (
+                        <Image src="/icons/arrow-down.svg" alt="Down" className="h-5 w-5" width={24} height={24} />
+                      )}
+                    </div>
+                  </button>
 
-                {expandedSections.includes(sectionName) && (
-                  <div className="space-y-1 pb-2">
-                    {sectionLessons.map(lesson => (
-                      <Link
-                        key={lesson.id}
-                        href={`/courses/${courseId}/lessons/${lesson.id}`}
-                        className={`flex items-center justify-between px-4 py-3 text-sm transition-colors ${
-                          lesson.id === lessonId
-                            ? 'bg-blue-50 text-[var(--blue-primary-alpha)]'
-                            : 'text-gray-600 hover:bg-gray-50'
-                        }`}
-                      >
-                        <span className="truncate mr-2 font-medium">{lesson.title}</span>
-                        {lesson.isCompleted ? (
-                          <Image
-                            src="/icons/tick-circle.svg"
-                            alt="Completed"
-                            className="h-6 w-6 text-blue-primary-alpha shrink-0"
-                            width={24}
-                            height={24}
-                          />
-                        ) : (
-                          <div
-                            className={`h-6 w-6 rounded-full border shrink-0 ${
-                              lesson.id === lessonId ? 'border-[var(--blue-primary-alpha)]' : 'border-gray-300'
-                            }`}
-                          />
-                        )}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                  {isExpanded && (
+                    <div className="space-y-1 pb-2">
+                      {sectionLessons.map(lesson => (
+                        <Link
+                          key={lesson.id}
+                          href={`/courses/${courseId}/lessons/${lesson.id}`}
+                          className={`flex items-center justify-between px-4 py-3 text-sm transition-colors ${
+                            lesson.id === lessonId
+                              ? 'bg-blue-50 text-[var(--blue-primary-alpha)]'
+                              : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          <span className="truncate mr-2 font-medium">{lesson.title}</span>
+                          {lesson.isCompleted ? (
+                            <Image
+                              src="/icons/tick-circle.svg"
+                              alt="Completed"
+                              className="h-6 w-6 text-blue-primary-alpha shrink-0"
+                              width={24}
+                              height={24}
+                            />
+                          ) : (
+                            <div
+                              className={`h-6 w-6 rounded-full border shrink-0 ${
+                                lesson.id === lessonId ? 'border-[var(--blue-primary-alpha)]' : 'border-gray-300'
+                              }`}
+                            />
+                          )}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </aside>
       </div>
