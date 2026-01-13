@@ -44,6 +44,23 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Custom LMS Colors */
+  --color-blue-primary: var(--blue-primary);
+  --color-blue-light: var(--blue-light);
+  --color-bg-gray: var(--bg-gray);
+  --color-text-dark: var(--text-dark);
+  --color-text-gray: var(--text-gray);
+  --color-text-light: var(--text-light);
+  --color-border-gray: var(--border-gray);
+  --color-green-stat: var(--green-stat);
+  --color-purple-primary: var(--purple-primary);
+  --color-purple-secondary: var(--purple-secondary);
+  --color-card: var(--card);
+  --color-white: var(--white);
+  --color-main-text: var(--main-text);
+  --color-main-text-2: var(--main-text-2);
+  --color-gray-ic-2: var(--gray-ic-2);
 }
 
 :root {
@@ -60,6 +77,11 @@
   --green-stat: #10b981;
   --white: #ffffff;
   --purple-primary: #d5bffd;
+  --purple-secondary: #6f57db;
+  --card: #fdfdfd;
+  --main-text: #202020;
+  --main-text-2: #636363;
+  --gray-ic-2: #e8e8e8;
 
   /* Existing theme colors */
   --background: oklch(1 0 0);

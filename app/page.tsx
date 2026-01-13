@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { HiOutlineSearch, HiOutlineBookOpen, HiOutlineUsers, HiOutlineTrendingUp } from 'react-icons/hi';
 import { useGetCoursesQuery, useGetStatsQuery } from '@/store/services/api';
 import { StatCard } from '@/components/ui/StatCard';
 import { CourseCard } from '@/components/ui/CourseCard';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Pagination } from '@/components/ui/Pagination';
+import Image from 'next/image';
 
 const categoryOptions = [
   { value: '', label: 'All Categories' },
@@ -24,95 +24,133 @@ const dateOptions = [
   { value: 'month', label: 'This Month' },
 ];
 
+const limitOptions = [
+  { value: '10', label: 'Show 10/page' },
+  { value: '5', label: 'Show 5/page' },
+  { value: '15', label: 'Show 15/page' },
+  { value: '20', label: 'Show 20/page' },
+];
+
 export default function CoursesPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [dateRange, setDateRange] = useState('');
+  const [limit, setLimit] = useState(10);
 
   const { data: stats, isLoading: statsLoading } = useGetStatsQuery();
   const { data: coursesData, isLoading: coursesLoading } = useGetCoursesQuery({
     page,
-    limit: 9,
+    limit,
     category,
     search,
   });
-
+  const handleLimitChange = (value: string) => {
+    setLimit(Number(value));
+    setPage(1);
+  };
+  console.log(coursesData);
   return (
     <div className="p-6">
       {/* Page Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[var(--text-dark)]">Courses</h1>
+      <div className="mb-6 space-y-2">
+        <h1 className="text-2xl font-bold text-[var(--text-dark)]">Course Management</h1>
+        <p className="text-sm text-[var(--text-gray)]">Create, organize, and assign courses to teams and individuals</p>
       </div>
 
       {/* Stats Cards */}
       <div className="mb-8 grid gap-4 md:grid-cols-3">
         <StatCard
-          icon={<HiOutlineBookOpen className="h-6 w-6 text-[var(--blue-primary)]" />}
+          icon={<Image src="/icons/book-purple.svg" alt="Book" width={24} height={24} />}
           label="Total Courses"
           value={statsLoading ? '...' : stats?.totalCourses || 0}
-          iconBgColor="bg-[var(--blue-primary)]/10"
+          iconBgColor="bg-[linear-gradient(180deg,#F3F1FC_0%,#FBEEFE_36%,#ECE2FE_75%,#DCD5FD_100%)]"
         />
         <StatCard
-          icon={<HiOutlineUsers className="h-6 w-6 text-[var(--green-stat)]" />}
+          icon={<Image src="/icons/teacher.svg" alt="Users" width={24} height={24} />}
           label="Total Enrollments"
           value={statsLoading ? '...' : stats?.totalEnrollments || 0}
-          iconBgColor="bg-[var(--green-stat)]/10"
+          iconBgColor="bg-[linear-gradient(180deg,#CFF4FC_0%,#CFF5FC_50%,#BBF0FA_75%,#D2F6FE_100%)]"
         />
         <StatCard
-          icon={<HiOutlineTrendingUp className="h-6 w-6 text-purple-600" />}
+          icon={<Image src="/icons/task.svg" alt="Average Completion" width={24} height={24} />}
           label="Avg Completion"
           value={statsLoading ? '...' : `${stats?.avgCompletion || 0}%`}
           trend={stats?.completionTrend}
-          iconBgColor="bg-purple-100"
+          iconBgColor="bg-[linear-gradient(180deg,#F3C9A5_0%,#F8DFC9_36%,#F9E1CD_75%,#FBE4D0_100%)]"
         />
       </div>
+      <div className="p-5 bg-white rounded-lg">
+        {/* Filters */}
+        <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
+          <div className="w-full md:w-96">
+            <Input
+              icon={<Image src="/icons/search-normal.svg" alt="search" width={20} height={20} />}
+              iconPosition="right"
+              placeholder="Search Course"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="rounded-full w-full"
+            />
+          </div>
+          <div className="flex gap-4">
+            <div className="w-40 self-end">
+              <Select
+                options={dateOptions}
+                value={dateRange}
+                onChange={setDateRange}
+                placeholder="Date"
+                className="pr-2"
+                icon="/icons/calendar.svg"
+              />
+            </div>
+            <div className="w-44 self-end">
+              <Select
+                options={categoryOptions}
+                value={category}
+                onChange={setCategory}
+                placeholder="Category"
+                className="rounded-full"
+              />
+            </div>
+          </div>
+        </div>
 
-      {/* Filters */}
-      <div className="mb-6 flex flex-wrap items-center gap-4">
-        <div className="w-72">
-          <Input
-            icon={<HiOutlineSearch className="h-5 w-5" />}
-            placeholder="Search courses..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-          />
-        </div>
-        <div className="w-40">
-          <Select options={dateOptions} value={dateRange} onChange={setDateRange} placeholder="Date" />
-        </div>
-        <div className="w-44">
-          <Select options={categoryOptions} value={category} onChange={setCategory} placeholder="Category" />
-        </div>
-      </div>
-
-      {/* Course Grid */}
-      {coursesLoading ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-xl bg-gray-200" />
-          ))}
-        </div>
-      ) : (
-        <>
+        {/* Course Grid */}
+        {coursesLoading ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {coursesData?.courses.map(course => (
-              <CourseCard key={course.id} course={course} />
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-64 animate-pulse rounded-xl bg-gray-200" />
             ))}
           </div>
+        ) : (
+          <>
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {coursesData?.courses.map(course => (
+                <CourseCard key={course.id} course={course} />
+              ))}
+            </div>
 
-          {/* Pagination */}
-          {coursesData && coursesData.pagination.totalPages > 1 && (
-            <div className="mt-8">
+            {/* Pagination */}
+            {/* {coursesData && coursesData.pagination.totalPages > 1 && ( */}
+            <div className="mt-8 flex justify-between">
+              <Select
+                options={limitOptions}
+                value={limit}
+                onChange={handleLimitChange}
+                placeholder="Limit"
+                className="rounded-full pr-12 text-main-text-2"
+              />
               <Pagination
-                currentPage={coursesData.pagination.currentPage}
-                totalPages={coursesData.pagination.totalPages}
+                currentPage={coursesData?.pagination.currentPage || 1}
+                totalPages={coursesData?.pagination.totalPages || 1}
                 onPageChange={setPage}
               />
             </div>
-          )}
-        </>
-      )}
+            {/* )} */}
+          </>
+        )}
+      </div>
     </div>
   );
 }

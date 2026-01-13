@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} font-sans antialiased`}>
         <ReduxProvider>
-          <div className="flex min-h-screen bg-[var(--bg-gray)]">
+          <div className="flex min-h-screen bg-bg-gray">
             <Sidebar />
             <div className="flex-1 pl-64">
               <Header />
