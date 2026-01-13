@@ -61,6 +61,7 @@
   --color-main-text: var(--main-text);
   --color-main-text-2: var(--main-text-2);
   --color-gray-ic-2: var(--gray-ic-2);
+  --color-border-2: var(--gray-border-2);
 }
 
 :root {
@@ -82,6 +83,7 @@
   --main-text: #202020;
   --main-text-2: #636363;
   --gray-ic-2: #e8e8e8;
+  --gray-border-2: #cecece;
 
   /* Existing theme colors */
   --background: oklch(1 0 0);

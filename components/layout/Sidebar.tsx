@@ -8,9 +8,9 @@ const navItems = [
   {
     name: 'Dashboard',
     href: '/',
-    icon: (isActive: boolean) => (
+    icon: (active: boolean) => (
       <Image
-        src={isActive ? '/icons/home-hashtag-active.svg' : '/icons/home-hashtag.svg'}
+        src={active ? '/icons/home-hashtag-active.svg' : '/icons/home-hashtag.svg'}
         alt="Dashboard"
         width={20}
         height={20}
@@ -20,85 +20,50 @@ const navItems = [
   {
     name: 'Courses/Materials',
     href: '/courses',
-    icon: (isActive: boolean) => (
-      <Image
-        src={isActive ? '/icons/book-active.svg' : '/icons/book.svg'}
-        alt="Dashboard"
-        width={20}
-        height={20}
-        className={
-          isActive
-            ? 'brightness-0 invert-[48%] sepia-[79%] saturate-[2476%] hue-rotate-[190deg] brightness-[118%] contrast-[119%]'
-            : ''
-        }
-      />
+    icon: (active: boolean) => (
+      <Image src={active ? '/icons/book-active.svg' : '/icons/book.svg'} alt="Courses" width={20} height={20} />
     ),
   },
   {
     name: 'Classes',
     href: '/classes',
-    icon: (isActive: boolean) => (
+    icon: (active: boolean) => (
       <Image
-        src={isActive ? '/icons/board-math-active.svg' : '/icons/board-math.svg'}
-        alt="Dashboard"
+        src={active ? '/icons/board-math-active.svg' : '/icons/board-math.svg'}
+        alt="Classes"
         width={20}
         height={20}
-        className={
-          isActive
-            ? 'brightness-0 invert-[48%] sepia-[79%] saturate-[2476%] hue-rotate-[190deg] brightness-[118%] contrast-[119%]'
-            : ''
-        }
       />
     ),
   },
   {
     name: 'Assessments',
     href: '/assessments',
-    icon: (isActive: boolean) => (
+    icon: (active: boolean) => (
       <Image
-        src={isActive ? '/icons/assessment-book-active.svg' : '/icons/assessment-book.svg'}
-        alt="Dashboard"
+        src={active ? '/icons/assessment-book-active.svg' : '/icons/assessment-book.svg'}
+        alt="Assessments"
         width={20}
         height={20}
-        className={
-          isActive
-            ? 'brightness-0 invert-[48%] sepia-[79%] saturate-[2476%] hue-rotate-[190deg] brightness-[118%] contrast-[119%]'
-            : ''
-        }
       />
     ),
   },
   {
     name: 'My Certification',
     href: '/certification',
-    icon: (isActive: boolean) => (
-      <Image
-        src={isActive ? '/icons/award-active.svg' : '/icons/award.svg'}
-        alt="Dashboard"
-        width={20}
-        height={20}
-        className={
-          isActive
-            ? 'brightness-0 invert-[48%] sepia-[79%] saturate-[2476%] hue-rotate-[190deg] brightness-[118%] contrast-[119%]'
-            : ''
-        }
-      />
+    icon: (active: boolean) => (
+      <Image src={active ? '/icons/award-active.svg' : '/icons/award.svg'} alt="Certification" width={20} height={20} />
     ),
   },
   {
     name: 'Settings',
     href: '/settings',
-    icon: (isActive: boolean) => (
+    icon: (active: boolean) => (
       <Image
-        src={isActive ? '/icons/setting-2-active.svg' : '/icons/setting-2.svg'}
-        alt="Dashboard"
+        src={active ? '/icons/setting-2-active.svg' : '/icons/setting-2.svg'}
+        alt="Settings"
         width={20}
         height={20}
-        className={
-          isActive
-            ? 'brightness-0 invert-[48%] sepia-[79%] saturate-[2476%] hue-rotate-[190deg] brightness-[118%] contrast-[119%]'
-            : ''
-        }
       />
     ),
   },

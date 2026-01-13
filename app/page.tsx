@@ -54,8 +54,8 @@ export default function CoursesPage() {
     <div className="p-6">
       {/* Page Header */}
       <div className="mb-6 space-y-2">
-        <h1 className="text-2xl font-bold text-[var(--text-dark)]">Course Management</h1>
-        <p className="text-sm text-[var(--text-gray)]">Create, organize, and assign courses to teams and individuals</p>
+        <h1 className="text-2xl font-bold text-text-dark">Course Management</h1>
+        <p className="text-sm text-text-gray">Create, organize, and assign courses to teams and individuals</p>
       </div>
 
       {/* Stats Cards */}
@@ -125,7 +125,7 @@ export default function CoursesPage() {
           </div>
         ) : (
           <>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 mb-8 md:grid-cols-2 lg:grid-cols-3">
               {coursesData?.courses.map(course => (
                 <CourseCard key={course.id} course={course} />
               ))}
@@ -133,20 +133,15 @@ export default function CoursesPage() {
 
             {/* Pagination */}
             {/* {coursesData && coursesData.pagination.totalPages > 1 && ( */}
-            <div className="mt-8 flex justify-between">
-              <Select
-                options={limitOptions}
-                value={limit}
-                onChange={handleLimitChange}
-                placeholder="Limit"
-                className="rounded-full pr-12 text-main-text-2"
-              />
-              <Pagination
-                currentPage={coursesData?.pagination.currentPage || 1}
-                totalPages={coursesData?.pagination.totalPages || 1}
-                onPageChange={setPage}
-              />
-            </div>
+
+            <Pagination
+              limit={limit}
+              limitOptions={limitOptions}
+              currentPage={coursesData?.pagination.currentPage || 1}
+              totalPages={coursesData?.pagination.totalPages || 1}
+              onPageChange={setPage}
+              handleLimitChange={handleLimitChange}
+            />
             {/* )} */}
           </>
         )}

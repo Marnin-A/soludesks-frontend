@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'outline';
@@ -12,9 +13,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-[var(--blue-primary)] text-white hover:bg-[var(--blue-primary)/0.8]',
-  secondary: 'bg-[var(--bg-gray)] text-[var(--text-dark)] hover:bg-gray-200',
-  ghost: 'text-[var(--text-gray)] hover:bg-[var(--bg-gray)] hover:text-[var(--text-dark)]',
-  outline: 'border border-[var(--border-gray)] text-[var(--text-dark)] hover:bg-[var(--bg-gray)]',
+  secondary: 'bg-gray-ic-1 text-text-dark hover:bg-gray-ic-1/0.8',
+  ghost: 'text-text-gray hover:bg-gray-ic-1 hover:text-text-dark',
+  outline: 'border border-[var(--border-gray)] text-text-dark hover:bg-gray-ic-1',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -34,7 +35,12 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--blue-primary)] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={cn(
+        `inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--blue-primary)] focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`,
+        variantStyles[variant],
+        sizeStyles[size],
+        className
+      )}
       disabled={disabled || isLoading}
       {...props}
     >

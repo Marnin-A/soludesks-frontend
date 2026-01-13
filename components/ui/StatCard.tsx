@@ -13,7 +13,7 @@ export function StatCard({ icon, label, value, trend, iconBgColor = 'bg-[var(--b
   return (
     <div className="flex items-center p-1 bg-white rounded-sm">
       <div className="flex items-center gap-4 w-full rounded-sm bg-gray-100 p-3">
-        <div className={`flex h-11 w-11 items-center justify-center rounded-md ${iconBgColor}`}>{icon}</div>
+        <div className={`flex h-11 min-w-11 items-center justify-center rounded-md ${iconBgColor}`}>{icon}</div>
         <div className="w-full">
           <p className="text-sm text-text-gray">{label}</p>
           <div className="flex items-center justify-between w-full gap-2">

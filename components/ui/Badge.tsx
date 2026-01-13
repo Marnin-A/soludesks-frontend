@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
 
 type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger';
@@ -5,6 +6,7 @@ type BadgeVariant = 'default' | 'primary' | 'secondary' | 'success' | 'warning' 
 interface BadgeProps {
   children: ReactNode;
   variant?: BadgeVariant;
+  className?: string;
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
@@ -16,9 +18,15 @@ const variantStyles: Record<BadgeVariant, string> = {
   danger: 'bg-red-100 text-red-700',
 };
 
-export function Badge({ children, variant = 'default' }: BadgeProps) {
+export function Badge({ children, variant = 'default', className }: BadgeProps) {
   return (
-    <span className={`inline-flex items-center rounded-full px-4 py-1 text-xs font-medium ${variantStyles[variant]}`}>
+    <span
+      className={cn(
+        `inline-flex items-center rounded-full px-4 py-1 text-xs font-medium`,
+        variantStyles[variant],
+        className
+      )}
+    >
       {children}
     </span>
   );
