@@ -30,6 +30,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 13,
     totalLessons: 32,
     completedLessons: 0,
+    lessons: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
   },
   {
     id: '2',
@@ -41,6 +42,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 24,
     totalLessons: 28,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '3',
@@ -53,6 +55,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 18,
     totalLessons: 24,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '4',
@@ -64,6 +67,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 31,
     totalLessons: 20,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '5',
@@ -75,6 +79,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 27,
     totalLessons: 30,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '6',
@@ -87,6 +92,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 45,
     totalLessons: 36,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '7',
@@ -98,6 +104,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 19,
     totalLessons: 22,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '8',
@@ -109,6 +116,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 22,
     totalLessons: 18,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '9',
@@ -120,6 +128,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 15,
     totalLessons: 26,
     completedLessons: 0,
+    lessons: [],
   },
   {
     id: '10',
@@ -132,6 +141,7 @@ export const mockCourses: Course[] = [
     activeLearnersCount: 28,
     totalLessons: 25,
     completedLessons: 0,
+    lessons: [],
   },
 ];
 
@@ -211,65 +221,145 @@ export const mockStudents: Student[] = [
 
 // Mock Lessons Data
 export const mockLessons: Lesson[] = [
+  // Introduction Section
   {
     id: '1',
     courseId: '1',
-    title: 'Lesson 1 - Welcome Message',
+    title: 'Welcome Message',
     description: 'Introduction to the course and what you will learn',
     videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
     duration: '5:30',
     order: 1,
     isCompleted: false,
-    content: `Welcome to Effective Workplace Communication! In this comprehensive course, you'll learn the essential skills needed to communicate effectively in professional settings.
+    section: 'Introduction',
+    content: `<p class="mb-4">Welcome to 'Communicate with Confidence'! In an era where the pace of work is ever-increasing and the demands on our time are relentless, the ability to communicate effectively has never been more crucial. This comprehensive course is meticulously crafted to equip you with the essential skills that will not only enhance your communication abilities but also empower you to thrive in any professional environment you find yourself in.</p>
 
-Throughout this course, we'll cover:
-• Verbal and non-verbal communication techniques
-• Email etiquette and professional writing
-• Presentation skills and public speaking
-• Active listening and feedback
-• Conflict resolution and difficult conversations
-• Cross-cultural communication
+<h3 class="font-bold mt-6 mb-3">Why Communication Matters</h3>
 
-By the end of this course, you'll be able to communicate with confidence, clarity, and professionalism in any workplace situation.`,
+<p class="mb-4">Effective communication is the cornerstone of success in the workplace. It is the bridge that connects individuals, teams, and organizations, facilitating collaboration and understanding. In today's diverse and dynamic work settings, the ability to convey your thoughts clearly and listen actively is paramount. This course aims to illuminate the significance of communication and provide you with the tools necessary to master it.</p>
+
+<h3 class="font-bold mt-6 mb-3">What You'll Learn</h3>
+
+<p class="mb-4">Throughout this course, you will delve into various aspects of communication, each designed to build upon the last, creating a robust foundation for your skills:</p>
+
+<ul class="list-decimal list-inside space-y-2 mb-6 ml-4">
+  <li><strong>Clear Articulation:</strong> You will learn techniques to express your ideas with clarity and precision, ensuring that your message is understood as intended. This includes understanding your audience and tailoring your message accordingly.</li>
+  <li><strong>Active Listening:</strong> Developing the ability to listen actively is crucial. You will practice techniques that enhance your listening skills, enabling you to fully engage with others and respond thoughtfully.</li>
+  <li><strong>Confident Conversations:</strong> Navigating challenging discussions can be daunting. This course will provide you with strategies to approach these conversations with poise and assurance, transforming potential conflicts into constructive dialogues.</li>
+  <li><strong>Non-Verbal Communication:</strong> Communication is not just about words. You will explore the nuances of non-verbal cues, such as body language and facial expressions, and learn how to utilize them to reinforce your message.</li>
+  <li><strong>Persuasive Language:</strong> Crafting compelling arguments is an art. You will learn how to influence others positively through the use of persuasive language, enabling you to advocate for your ideas effectively.</li>
+</ul>
+
+<h3 class="font-bold mt-6 mb-3">Building a Collaborative Environment</h3>
+
+<p class="mb-4">Mastering these skills will not only enhance your personal communication but will also contribute to building stronger interpersonal relationships within your team. A collaborative work environment is vital for team success, and effective communication is the key to fostering this atmosphere. You will learn how to create an inclusive environment where ideas can flourish, and everyone feels valued.</p>
+
+<h3 class="font-bold mt-6 mb-3">Course Outcomes</h3>
+
+<p class="mb-4">By the end of this transformative course, you will be equipped to:</p>
+
+<ul class="list-none list-inside space-y-2 mb-6 ml-4">
+  <li>- Communicate effectively in any situation, whether in meetings, presentations, or casual conversations.</li>
+  <li>- Navigate complex challenges with confidence, turning potential obstacles into opportunities for growth.</li>
+  <li>- Contribute significantly to your organization's success through improved communication practices, fostering a culture of openness and collaboration.</li>
+</ul>
+
+<p>Join us on this journey to transform your communication skills and unlock new heights in your career! Together, we will explore the depths of effective communication, ensuring that you emerge not just as a better communicator, but as a more confident and capable professional.</p>`,
   },
   {
     id: '2',
     courseId: '1',
-    title: 'Lesson 2 - Setting Up Your Workspace',
-    description: 'Learn how to create an effective communication environment',
-    duration: '8:15',
+    title: 'A Note on Style',
+    description: 'Understanding the style of communication taught in this course',
+    duration: '3:15',
     order: 2,
     isCompleted: false,
-    content: 'Content for lesson 2...',
+    section: 'Introduction',
+    content: 'Content about style...',
   },
   {
     id: '3',
     courseId: '1',
-    title: 'Lesson 3 - Understanding Communication Styles',
-    description: 'Explore different communication styles and how to adapt',
-    duration: '12:45',
+    title: "What You'll Learn",
+    description: 'Overview of the course curriculum',
+    duration: '4:20',
     order: 3,
     isCompleted: false,
-    content: 'Content for lesson 3...',
+    section: 'Introduction',
+    content: 'Content about what you will learn...',
   },
   {
     id: '4',
     courseId: '1',
-    title: 'Lesson 4 - Email Etiquette',
-    description: 'Master professional email communication',
-    duration: '10:20',
+    title: 'Meet Your Instructor',
+    description: 'Get to know your course instructor',
+    duration: '2:45',
     order: 4,
     isCompleted: false,
-    content: 'Content for lesson 4...',
+    section: 'Introduction',
+    content: 'Content about the instructor...',
   },
+
+  // Setting Up Your Workspace Section
   {
     id: '5',
     courseId: '1',
-    title: 'Lesson 5 - Presentation Basics',
-    description: 'Learn the fundamentals of effective presentations',
-    duration: '15:00',
+    title: 'Ergonomic Basics',
+    description: 'Setting up your desk for comfort',
+    duration: '8:00',
     order: 5,
     isCompleted: false,
-    content: 'Content for lesson 5...',
+    section: 'Setting Up Your Workspace',
+    content: 'Content about ergonomics...',
+  },
+  {
+    id: '6',
+    courseId: '1',
+    title: 'Lighting and Sound',
+    description: 'Optimizing your environment for video calls',
+    duration: '6:30',
+    order: 6,
+    isCompleted: false,
+    section: 'Setting Up Your Workspace',
+    content: 'Content about lighting and sound...',
+  },
+
+  // Navigating the Course Section
+  {
+    id: '7',
+    courseId: '1',
+    title: 'Using the Dashboard',
+    description: 'How to navigate the learning platform',
+    duration: '4:15',
+    order: 7,
+    isCompleted: false,
+    section: 'Navigating the Course',
+    content: 'Content about dashboard...',
+  },
+
+  // Course Resources Section
+  {
+    id: '8',
+    courseId: '1',
+    title: 'Downloadable Materials',
+    description: 'Accessing course PDFs and worksheets',
+    duration: '2:00',
+    order: 8,
+    isCompleted: false,
+    section: 'Course Resources',
+    content: 'Content about resources...',
+  },
+
+  // Getting Started Section
+  {
+    id: '9',
+    courseId: '1',
+    title: 'Pre-course Assessment',
+    description: 'Check your current knowledge',
+    duration: '10:00',
+    order: 9,
+    isCompleted: false,
+    section: 'Getting Started',
+    content: 'Content for pre-course assessment...',
   },
 ];

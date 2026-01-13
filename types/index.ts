@@ -15,6 +15,7 @@ export interface Course {
   category: 'Soft Skill' | 'Digital Skills' | 'Technical' | 'Business';
   image: string;
   badge?: string;
+  lessons: string[];
   totalApplicants: number;
   activeLearnersCount: number;
   totalLessons: number;
@@ -42,6 +43,7 @@ export interface Lesson {
   order: number;
   isCompleted: boolean;
   content: string;
+  section: string;
 }
 
 // Stats Types

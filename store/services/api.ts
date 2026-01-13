@@ -58,6 +58,20 @@ export const api = createApi({
       transformResponse: (response: { success: boolean; data: User }) => response.data,
       providesTags: ['User'],
     }),
+
+    // Update lesson completion status
+    updateLessonCompletion: builder.mutation<Lesson, { courseId: string; lessonId: string; isCompleted: boolean }>({
+      query: ({ courseId, lessonId, isCompleted }) => ({
+        url: `/courses/${courseId}/lessons/${lessonId}`,
+        method: 'PATCH',
+        body: { isCompleted },
+      }),
+      transformResponse: (response: { success: boolean; data: Lesson }) => response.data,
+      invalidatesTags: (result, error, { courseId }) => [
+        { type: 'Lessons', id: courseId },
+        { type: 'Course', id: courseId },
+      ],
+    }),
   }),
 });
 
@@ -68,4 +82,5 @@ export const {
   useGetApplicantsQuery,
   useGetLessonsQuery,
   useGetUserQuery,
+  useUpdateLessonCompletionMutation,
 } = api;

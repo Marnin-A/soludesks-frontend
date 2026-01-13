@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -62,6 +63,7 @@
   --color-main-text-2: var(--main-text-2);
   --color-gray-ic-2: var(--gray-ic-2);
   --color-border-2: var(--gray-border-2);
+  --color-blue-primary-alpha: var(--blue-primary-alpha);
 }
 
 :root {
@@ -84,6 +86,7 @@
   --main-text-2: #636363;
   --gray-ic-2: #e8e8e8;
   --gray-border-2: #cecece;
+  --blue-primary-alpha: #0063ef;
 
   /* Existing theme colors */
   --background: oklch(1 0 0);
@@ -159,5 +162,12 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+* {
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
   }
 }
