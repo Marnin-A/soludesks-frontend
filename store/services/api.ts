@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Course, Student, Lesson, DashboardStats, User, PaginationData, LessonReview } from '@/types';
+import { Course, Student, Lesson, DashboardStats, User, PaginationData, Review, ReviewStats } from '@/types';
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
-  tagTypes: ['Courses', 'Course', 'Stats', 'User', 'Applicants', 'Lessons', 'Reviews'],
+  tagTypes: ['Courses', 'Course', 'Stats', 'User', 'Applicants', 'Lessons'],
   endpoints: builder => ({
     // Get dashboard stats
     getStats: builder.query<DashboardStats, void>({
@@ -52,13 +52,6 @@ export const api = createApi({
       providesTags: (result, error, courseId) => [{ type: 'Lessons', id: courseId }],
     }),
 
-    // Get lesson reviews
-    getLessonReviews: builder.query<LessonReview[], { courseId: string; lessonId: string }>({
-      query: ({ courseId, lessonId }) => `/courses/${courseId}/lessons/${lessonId}/reviews`,
-      transformResponse: (response: { success: boolean; data: LessonReview[] }) => response.data,
-      providesTags: (result, error, { courseId, lessonId }) => [{ type: 'Reviews', id: `${courseId}-${lessonId}` }],
-    }),
-
     // Get user profile
     getUser: builder.query<User, void>({
       query: () => '/user',
@@ -79,6 +72,20 @@ export const api = createApi({
         { type: 'Course', id: courseId },
       ],
     }),
+
+    // Get course reviews
+    getReviews: builder.query<
+      { reviews: Review[]; stats: ReviewStats },
+      { courseId: string; lessonId?: string }
+    >({
+      query: ({ courseId, lessonId }) => {
+        const params = new URLSearchParams();
+        if (lessonId) params.append('lessonId', lessonId);
+        return `/courses/${courseId}/reviews?${params.toString()}`;
+      },
+      transformResponse: (response: { success: boolean; data: { reviews: Review[]; stats: ReviewStats } }) =>
+        response.data,
+    }),
   }),
 });
 
@@ -89,6 +96,6 @@ export const {
   useGetApplicantsQuery,
   useGetLessonsQuery,
   useGetUserQuery,
-  useGetLessonReviewsQuery,
   useUpdateLessonCompletionMutation,
+  useGetReviewsQuery,
 } = api;

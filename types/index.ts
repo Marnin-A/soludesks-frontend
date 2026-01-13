@@ -46,24 +46,6 @@ export interface Lesson {
   section: string;
 }
 
-// Lesson Review Types
-export interface LessonReview {
-  id: string;
-  courseId: string;
-  lessonId: string;
-  name: string;
-  role: string;
-  city: string;
-  avatar?: string;
-  rating: number;
-  comment: string;
-  tags?: string[];
-  submittedAt: string;
-  highlight?: string;
-  attachments?: string[];
-  module?: string;
-}
-
 // Stats Types
 export interface DashboardStats {
   totalCourses: number;
@@ -90,4 +72,29 @@ export interface PaginationData {
   totalPages: number;
   itemsPerPage: number;
   totalItems: number;
+}
+
+// Review Types
+export interface Review {
+  id: string;
+  lessonId: string;
+  courseId: string;
+  studentId: string;
+  studentName: string;
+  studentAvatar: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
+export interface ReviewStats {
+  averageRating: number;
+  totalReviews: number;
+  ratingDistribution: {
+    5: number;
+    4: number;
+    3: number;
+    2: number;
+    1: number;
+  };
 }
