@@ -39,10 +39,21 @@ export const api = createApi({
     }),
 
     // Get course applicants
-    getApplicants: builder.query<Student[], string>({
-      query: courseId => `/courses/${courseId}/applicants`,
-      transformResponse: (response: { success: boolean; data: Student[] }) => response.data,
-      providesTags: (result, error, courseId) => [{ type: 'Applicants', id: courseId }],
+    getApplicants: builder.query<
+      { applicants: Student[]; pagination: PaginationData },
+      { courseId: string; page?: number; limit?: number }
+    >({
+      query: ({ courseId, page = 1, limit = 10 }) => {
+        const params = new URLSearchParams();
+        params.append('page', page.toString());
+        params.append('limit', limit.toString());
+        return `/courses/${courseId}/applicants?${params.toString()}`;
+      },
+      transformResponse: (response: {
+        success: boolean;
+        data: { applicants: Student[]; pagination: PaginationData };
+      }) => response.data,
+      providesTags: (result, error, { courseId }) => [{ type: 'Applicants', id: courseId }],
     }),
 
     // Get course lessons

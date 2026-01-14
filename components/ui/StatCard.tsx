@@ -12,15 +12,15 @@ interface StatCardProps {
 export function StatCard({ icon, label, value, trend, iconBgColor = 'bg-[var(--blue-primary)]/10' }: StatCardProps) {
   return (
     <div className="flex items-center p-1 bg-white rounded-sm">
-      <div className="flex items-center gap-4 w-full rounded-sm bg-gray-100 p-3">
+      <div className="flex items-center gap-4 w-full rounded-sm bg-bg-gray p-3">
         <div className={`flex h-11 min-w-11 items-center justify-center rounded-md ${iconBgColor}`}>{icon}</div>
         <div className="w-full">
-          <p className="text-sm text-text-gray">{label}</p>
+          <p className="text-sm font-normal text-text-gray mb-1">{label}</p>
           <div className="flex items-center justify-between w-full gap-2">
-            <p className="text-2xl font-bold text-text-dark">{value}</p>
+            <p className="text-2xl font-medium text-text-dark">{value}</p>
             {trend !== undefined && (
               <span
-                className={`text-sm font-medium flex items-center gap-1 ${
+                className={`text-sm font-normal flex items-center gap-1 text-xxs ${
                   trend >= 0 ? 'text-green-stat' : 'text-red-500'
                 }`}
               >

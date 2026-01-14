@@ -31,14 +31,15 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
   const router = useRouter();
 
   const { data: course, isLoading: courseLoading } = useGetCourseByIdQuery(id);
-  const { data: applicants, isLoading: applicantsLoading } = useGetApplicantsQuery(id);
+  const { data: applicantsData, isLoading: applicantsLoading } = useGetApplicantsQuery({
+    courseId: id,
+    page,
+    limit,
+  });
 
   const handleLimitChange = (value: string) => {
     setLimit(Number(value));
     setPage(1);
-  };
-  const handleBackToCourses = () => {
-    router.back();
   };
 
   if (courseLoading) {
@@ -99,11 +100,11 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
       {/* Course Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Button variant="secondary" className="rounded-full h-11 w-11 p-0" onClick={handleBackToCourses}>
+          <Link href="/" className="rounded-full h-11 w-11 p-0 flex items-center justify-center bg-border-gray text-text-dark hover:bg-border-gray/0.8'">
             <Image src="/icons/Line arrow-left.svg" alt="back to courses" width={24} height={24} />
-          </Button>
+          </Link>
           <h1 className="text-2xl font-bold text-text-dark">{course.title}</h1>
-          <Badge className="py-2 px-5">{course.category}</Badge>
+          <Badge className="py-2 px-5" variant="secondary">{course.category}</Badge>
         </div>
         <Link href={`/courses/${id}/lessons/1`}>
           <Button className="py-3 px-15">Start Learning</Button>
@@ -118,16 +119,16 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
       {/* Stats */}
       <div className="mb-8 grid gap-4 md:grid-cols-2">
         <StatCard
-          icon={<HiOutlineUsers className="h-6 w-6 text-amber-500" />}
+          icon={<Image src="/icons/profile-2user.svg" alt="total applicants" width={24} height={24} />}
           label="Total Applicants"
           value={course.totalApplicants}
-          iconBgColor="bg-amber-100"
+          iconBgColor="bg-[linear-gradient(180deg,#BEFDD9_0%,#D4FEB4_53%,#CBFAC2_100%)]"
         />
         <StatCard
-          icon={<HiOutlineUserGroup className="h-6 w-6 text-[var(--green-stat)]" />}
+          icon={<Image src="/icons/teacher.svg" alt="active learners" width={24} height={24} />}
           label="Active Learners"
           value={course.activeLearnersCount}
-          iconBgColor="bg-[var(--green-stat)]/10"
+          iconBgColor="bg-[linear-gradient(180deg,#CFF4FC_0%,#CFF5FC_50%,#BBF0FA_75%,#D2F6FE_100%)]"
         />
       </div>
 
@@ -137,14 +138,18 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
           <div className="h-64 animate-pulse rounded-xl bg-gray-200" />
         ) : (
           <div className="bg-white overflow-x-auto rounded-xl border border-border-gray">
-            <Table columns={columns} data={applicants || []} keyExtractor={(student: Student) => student.id} />
+            <Table
+              columns={columns}
+              data={applicantsData?.applicants || []}
+              keyExtractor={(student: Student) => student.id}
+            />
             <Pagination
               currentPage={page}
               handleLimitChange={handleLimitChange}
               limit={limit}
               limitOptions={limitOptions}
               onPageChange={setPage}
-              totalPages={Math.ceil((applicants?.length || 0) / limit)}
+              totalPages={applicantsData?.pagination.totalPages || 0}
               className="px-6 py-5"
             />
           </div>

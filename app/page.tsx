@@ -49,13 +49,13 @@ export default function CoursesPage() {
     setLimit(Number(value));
     setPage(1);
   };
-  console.log(coursesData);
+
   return (
     <div className="p-6">
       {/* Page Header */}
       <div className="mb-6 space-y-2">
-        <h1 className="text-2xl font-bold text-text-dark">Course Management</h1>
-        <p className="text-sm text-text-gray">Create, organize, and assign courses to teams and individuals</p>
+        <h1 className="text-2xl font-medium text-text-dark">Course Management</h1>
+        <p className="text-sm font-light text-text-gray">Create, organize, and assign courses to teams and individuals</p>
       </div>
 
       {/* Stats Cards */}

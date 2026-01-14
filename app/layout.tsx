@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} font-inter antialiased`}>
         <ReduxProvider>
           <div className="flex min-h-screen bg-bg-gray">
             <Sidebar />

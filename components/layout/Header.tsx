@@ -29,13 +29,13 @@ export function Header() {
       <div className="flex items-center gap-4">
         {/* Messages */}
         <button className="rounded-lg p-2 text-[var(--text-gray)] hover:bg-[var(--bg-gray)]">
-          <Image src="/icons/message-notif.svg" alt="Notification" width={20} height={20} />
+          <Image src="/icons/message-notif.svg" alt="Notification" width={24} height={24} />
         </button>
 
         {/* Notification */}
         <button className="relative rounded-lg p-2 text-[var(--text-gray)] hover:bg-[var(--bg-gray)]">
-          <Image src="/icons/notification.svg" alt="Notification" width={20} height={20} />
-          <span className="absolute right-1.5 top-1.5 h-3 w-3 rounded-full bg-red-500"></span>
+          <Image src="/icons/notification.svg" alt="Notification" width={24} height={24} />
+          <span className="absolute right-1.5 top-1.5 h-3.5 w-3.5 rounded-full bg-red-500 text-white text-xs font-medium flex items-center justify-center">4</span>
         </button>
         {/* User Profile */}
         <div className="flex items-center w-48 gap-3 rounded-lg px-3 py-2 hover:bg-[var(--bg-gray)] cursor-pointer">
@@ -46,8 +46,8 @@ export function Header() {
             </AvatarFallback>
           </Avatar>
           <div className="text-left truncate">
-            <p className="text-base font-medium text-[var(--text-dark)]">{user?.name || 'Loading...'}</p>
-            <p className="text-base w-34 truncate text-[var(--text-gray)]">{user?.email || 'Loading...'}</p>
+            <p className="text-base font-normal text-[var(--text-dark)]">{user?.name || 'Loading...'}</p>
+            <p className="text-base font-normal w-34 truncate text-[var(--text-gray)]">{user?.email || 'Loading...'}</p>
           </div>
         </div>
       </div>

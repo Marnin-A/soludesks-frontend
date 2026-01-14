@@ -12,7 +12,7 @@ export interface Course {
   id: string;
   title: string;
   description: string;
-  category: 'Soft Skill' | 'Digital Skills' | 'Technical' | 'Business';
+  category: 'Soft Skill' | 'Digital Skills' | 'Onboarding' | 'Business & Strategy' | 'Compliance & Policy' ;
   image: string;
   badge?: string;
   lessons: string[];
