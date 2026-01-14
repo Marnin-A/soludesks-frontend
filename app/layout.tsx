@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ReduxProvider } from '@/store/ReduxProvider';
-import { Sidebar } from '@/components/layout/Sidebar';
-import { Header } from '@/components/layout/Header';
+import { AppShell } from '@/components/layout/AppShell';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -24,13 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} font-inter antialiased`}>
         <ReduxProvider>
-          <div className="flex min-h-screen bg-bg-gray">
-            <Sidebar />
-            <div className="flex-1 pl-64">
-              <Header />
-              <main className="pt-16">{children}</main>
-            </div>
-          </div>
+          <AppShell>{children}</AppShell>
         </ReduxProvider>
       </body>
     </html>

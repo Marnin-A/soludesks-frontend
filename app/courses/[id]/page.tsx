@@ -93,19 +93,25 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
   ];
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       {/* Course Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex gap-4 xl:flex-row xl:items-center md:justify-between max-xl:flex-col max-xl:items-start">
         <div className="flex items-center gap-3">
-          <Link href="/" className="rounded-full h-11 w-11 p-0 flex items-center justify-center bg-border-gray text-text-dark hover:bg-border-gray/0.8'">
+          <Link href="/" className="flex h-11 w-11 items-center justify-center rounded-full bg-border-gray text-text-dark hover:bg-border-gray/80">
             <Image src="/icons/Line arrow-left.svg" alt="back to courses" width={24} height={24} />
           </Link>
-          <h1 className="text-2xl font-medium text-main-text">{course.title}</h1>
-          <Badge className="py-2 px-5" variant="secondary">{course.category}</Badge>
+          <h1 className="text-2xl font-medium text-main-text ">{course.title}</h1>
+          <Badge className="py-2 px-5 max-xl:hidden" variant="secondary">{course.category}</Badge>
         </div>
-        <Link href={`/courses/${id}/lessons/1`}>
-          <Button className="py-3 px-15">Start Learning</Button>
+        <Link href={`/courses/${id}/lessons/1`} className="w-full md:w-auto max-xl:hidden">
+          <Button className="w-full py-3 px-6">Start Learning</Button>
         </Link>
+        <div className="max-xl:flex gap-4 max-xl:justify-end xl:hidden w-full">
+          <Badge className="py-2 px-5 w-max whitespace-nowrap" variant="secondary">{course.category}</Badge>
+          <Link href={`/courses/${id}/lessons/1`} className="w-full">
+            <Button className="w-full py-3 px-6">Start Learning</Button>
+          </Link>
+        </div>
       </div>
 
       {/* Hero Image */}

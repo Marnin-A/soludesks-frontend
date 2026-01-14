@@ -189,7 +189,7 @@ export default function AssessmentsPage() {
     .reduce((acc, a) => acc + (a.score || 0), 0) / mockAssessments.filter(a => a.score !== undefined).length || 0;
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       {/* Page Header */}
       <div className="mb-6 space-y-2">
         <h1 className="text-2xl font-bold text-text-dark">Assessments</h1>
@@ -219,9 +219,9 @@ export default function AssessmentsPage() {
       </div>
 
       {/* Filters and Assessments List */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6">
+      <div className="bg-white rounded-xl border border-gray-100 p-4 sm:p-6">
         {/* Filters */}
-        <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
+        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div className="w-full md:w-80">
             <Input
               icon={<Image src="/icons/search-normal.svg" alt="search" width={20} height={20} />}
@@ -232,8 +232,8 @@ export default function AssessmentsPage() {
               className="rounded-full w-full"
             />
           </div>
-          <div className="flex gap-4">
-            <div className="w-36">
+          <div className="flex w-full flex-wrap gap-3 sm:justify-start md:w-auto md:justify-end">
+            <div className="w-full min-w-[140px] sm:w-36">
               <Select
                 options={statusOptions}
                 value={status}
@@ -241,7 +241,7 @@ export default function AssessmentsPage() {
                 placeholder="Status"
               />
             </div>
-            <div className="w-36">
+            <div className="w-full min-w-[140px] sm:w-36">
               <Select
                 options={typeOptions}
                 value={type}

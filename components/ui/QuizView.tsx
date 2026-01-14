@@ -36,12 +36,12 @@ export function QuizView({ quiz, onSubmit }: QuizViewProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100">
       {/* Quiz Header */}
-      <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-medium text-main-text">{quiz.title}</h2>
+      <div className="px-4 py-4 sm:px-6 sm:py-5 border-b border-gray-200">
+        <h2 className="text-base sm:text-lg font-medium text-main-text">{quiz.title}</h2>
       </div>
 
       {/* Questions */}
-      <div className="p-6">
+      <div className="px-4 py-4 sm:px-6 sm:py-5">
         {quiz.questions.map((question, index) => (
           <QuizQuestion
             key={question.id}
@@ -54,10 +54,10 @@ export function QuizView({ quiz, onSubmit }: QuizViewProps) {
       </div>
 
       {/* Submit Button */}
-      <div className="p-6 border-gray-200 flex justify-end">
+      <div className="px-4 py-4 sm:px-6 sm:py-5 border-t border-gray-200 flex justify-end">
         <Button
           onClick={handleSubmit}
-          className="px-16 py-3 border-blue-primary text-blue-primary font-light"
+          className="px-10 sm:px-16 py-2.5 sm:py-3 border-blue-primary text-blue-primary font-light"
           variant="outline"
         >
           Submit

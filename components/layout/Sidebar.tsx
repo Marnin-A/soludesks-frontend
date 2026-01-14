@@ -69,7 +69,12 @@ const navItems = [
   },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
@@ -80,14 +85,34 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-white">
+    <aside
+      className={`fixed left-0 top-0 z-40 h-screen w-64 bg-white shadow-lg transition-transform duration-200 ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      } lg:translate-x-0 lg:shadow-none`}
+    >
       {/* Logo */}
       <div className="flex h-16 items-center gap-2 border-b border-[var(--border-gray)] px-6">
         <Image src="/soludesks_logo.png" alt="Soludesks Logo" width={136} height={36} />
+        <button
+          type="button"
+          onClick={onClose}
+          className="ml-auto rounded-md p-2 text-[var(--text-gray)] hover:bg-[var(--bg-gray)] lg:hidden"
+          aria-label="Close sidebar"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       {/* Navigation */}
-      <nav className="pt-6 px-4 border-r h-full border-[var(--border-gray)]">
+      <nav className="h-[calc(100%-4rem)] overflow-y-auto border-r border-[var(--border-gray)] px-4 pt-6">
         <ul className="space-y-1">
           {navItems.map(item => {
             const active = isActive(item.href);

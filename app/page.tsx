@@ -51,7 +51,7 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       {/* Page Header */}
       <div className="mb-6 space-y-2">
         <h1 className="text-2xl font-medium text-text-dark">Course Management</h1>
@@ -80,10 +80,10 @@ export default function CoursesPage() {
           iconBgColor="bg-[linear-gradient(180deg,#F3C9A5_0%,#F8DFC9_36%,#F9E1CD_75%,#FBE4D0_100%)]"
         />
       </div>
-      <div className="p-5 bg-white rounded-lg">
+      <div className="p-4 sm:p-5 bg-white rounded-lg">
         {/* Filters */}
-        <div className="mb-6 flex flex-wrap justify-between items-center gap-4">
-          <div className="w-full md:w-96">
+        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="w-full md:max-w-md">
             <Input
               icon={<Image src="/icons/search-normal.svg" alt="search" width={20} height={20} />}
               iconPosition="right"
@@ -93,8 +93,8 @@ export default function CoursesPage() {
               className="rounded-full w-full"
             />
           </div>
-          <div className="flex gap-4">
-            <div className="w-40 self-end">
+          <div className="flex w-full flex-wrap gap-3 sm:justify-start md:w-auto md:justify-end">
+            <div className="w-full min-w-[150px] sm:w-40">
               <Select
                 options={dateOptions}
                 value={dateRange}
@@ -104,7 +104,7 @@ export default function CoursesPage() {
                 icon="/icons/calendar.svg"
               />
             </div>
-            <div className="w-44 self-end">
+            <div className="w-full min-w-[150px] sm:w-44">
               <Select
                 options={categoryOptions}
                 value={category}

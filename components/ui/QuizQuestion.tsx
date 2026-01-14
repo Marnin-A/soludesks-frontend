@@ -20,22 +20,22 @@ export function QuizQuestion({
   const isMultipleChoice = question.type === 'multiple_choice';
 
   return (
-    <div className="border border-gray-200 rounded-xl p-6 mb-4">
+    <div className="border border-gray-200 rounded-xl p-4 sm:p-6 mb-4">
       {/* Question Header */}
-      <div className="flex items-start gap-4 mb-4">
+      <div className="flex items-start gap-3 sm:gap-4 mb-3 sm:mb-4">
         <div
           className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white text-sm font-semibold bg-blue-primary-alpha`}
         >
           {questionNumber}
         </div>
         <div className="flex-1">
-          <h3 className="font-medium text-main-text">{question.question}</h3>
-          <div className="flex items-center gap-2 mt-1 text-sm text-main-text-2">
-            <span className='border rounded-md px-2 py-0.5 text-xxs font-light text-base text-main-text'>{isMultipleChoice ? 'Multiple Choice' : 'Short answer'}</span>
+          <h3 className="font-medium text-main-text text-sm sm:text-base leading-snug">{question.question}</h3>
+          <div className="flex flex-wrap items-center gap-2 mt-1 text-xs sm:text-sm text-main-text-2">
+            <span className='border rounded-md px-2 py-0.5 text-xxs font-light text-main-text'>{isMultipleChoice ? 'Multiple Choice' : 'Short answer'}</span>
       
-            <span className="flex items-center gap-1 text-main-text-2 text-xxs">
+            <span className="flex items-center gap-1 text-main-text-2 text-xxs sm:text-xs">
               <Image src="/icons/ribbon.svg" alt="ribbon" width={12} height={12} />
-              <span className='text-xxs font-light text-base text-main-text'>{question.points} points</span>
+              <span className='text-xxs sm:text-xs font-light text-main-text'>{question.points} points</span>
             </span>
           </div>
         </div>
@@ -43,11 +43,11 @@ export function QuizQuestion({
 
       {/* Answer Options */}
       {isMultipleChoice && question.options ? (
-        <div className="space-y-2 ml-12">
+        <div className="space-y-2 sm:ml-12">
           {question.options.map(option => (
             <label
               key={option.id}
-              className={`flex items-center gap-3 p-2 rounded-lg border cursor-pointer transition-colors ${
+              className={`flex items-center gap-3 p-2 sm:p-3 rounded-lg border cursor-pointer transition-colors ${
                 selectedAnswer === option.id
                   ? 'border-blue-primary-alpha bg-blue-50'
                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -70,17 +70,17 @@ export function QuizQuestion({
               >
                 {option.label}.
               </span>
-              <span className="text-sm text-main-text-2 font-normal">{option.text}</span>
+              <span className="text-sm sm:text-base text-main-text-2 font-normal leading-snug">{option.text}</span>
             </label>
           ))}
         </div>
       ) : (
-        <div className="ml-12">
+        <div className="sm:ml-12">
           <textarea
             placeholder="Enter answer here"
             value={selectedAnswer || ''}
             onChange={e => onAnswerChange(question.id, e.target.value)}
-            className="w-full min-h-[100px] p-4 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-primary-alpha focus:border-transparent resize-none"
+            className="w-full min-h-[100px] p-3 sm:p-4 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-primary-alpha focus:border-transparent resize-none"
           />
         </div>
       )}

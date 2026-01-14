@@ -102,21 +102,21 @@ export default function LessonPage({ params }: LessonPageProps) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-theme(spacing.20))] flex-col">
+    <div className="flex min-h-[calc(100vh-theme(spacing.20))] flex-col">
       {/* Header */}
-      <div className="flex items-center gap-4 p-4 px-6">
+      <div className="flex items-center gap-4 px-4 py-4 sm:px-6">
         <Link
           href={`/courses/${courseId}`}
           className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
         >
-          <HiArrowLeft className="h-5 w-5 text-gray-600" />
+          <Image src="/icons/Line arrow-left.svg" alt="Back" className="w-6 h-6" width={24} height={24} />
         </Link>
         <h1 className="text-xl font-bold text-gray-800">{course?.title}</h1>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 flex-col gap-4 overflow-hidden lg:flex-row lg:gap-6">
         {/* Main Content */}
-        <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
+        <div className="flex-1 overflow-y-auto bg-gray-50 sm:p-6">
           <div className="mx-auto max-w-4xl">
             {/* Show Quiz or Regular Lesson Content */}
             {isQuizLesson ? (
@@ -124,7 +124,7 @@ export default function LessonPage({ params }: LessonPageProps) {
               <>
                 {/* Tabs */}
                 <div className="mb-6 border-b border-gray-200">
-                  <div className="flex gap-8">
+                  <div className="flex flex-wrap gap-4 sm:gap-8">
                     <button
                       onClick={() => setActiveTab('content')}
                       className={`pb-3 text-sm font-semibold transition-colors ${
@@ -222,7 +222,7 @@ export default function LessonPage({ params }: LessonPageProps) {
 
                 {/* Tabs */}
                 <div className="mb-6 border-b border-gray-200">
-                  <div className="flex gap-8">
+                  <div className="flex flex-wrap gap-4 sm:gap-8">
                     <button
                       onClick={() => setActiveTab('content')}
                       className={`pb-3 text-sm font-semibold transition-colors ${
@@ -318,14 +318,14 @@ export default function LessonPage({ params }: LessonPageProps) {
         </div>
 
         {/* Sidebar */}
-        <aside className="w-96 max-h-[70vh] overflow-y-auto border-2 border-y rounded-xl mr-9 border-gray-200 bg-white">
-          <div className="p-4 border-b-2 border-gray-100">
+        <aside className="w-full overflow-hidden rounded-xl border-2 border-y border-gray-200 bg-white lg:mr-9 lg:w-96 lg:max-h-[70vh] lg:overflow-y-auto">
+          <div className="border-b-2 border-gray-100 p-4">
             <h2 className="text-sm text-gray-700">
               Lessons ({completedLessons}/{totalLessons})
             </h2>
           </div>
 
-          <div className="">
+          <div className="overflow-y-auto">
             {Object.entries(sections).map(([sectionName, sectionLessons]) => {
               const sectionCompleted = sectionLessons.every(l => l.isCompleted);
               const isExpanded = expandedSections.includes(sectionName);
@@ -340,11 +340,11 @@ export default function LessonPage({ params }: LessonPageProps) {
                     <div className="flex items-center gap-2">
                       {sectionCompleted && (
                         <Image
-                          src="/icons/tick-circle.svg"
+                          src="/icons/tick-circle-green.svg"
                           alt="Section Completed"
-                          className="h-5 w-5"
-                          width={20}
-                          height={20}
+                          className="w-6 h-6"
+                          width={24}
+                          height={24}
                         />
                       )}
                       {isExpanded ? (
