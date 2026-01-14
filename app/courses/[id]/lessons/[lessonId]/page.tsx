@@ -260,7 +260,7 @@ export default function LessonPage({ params }: LessonPageProps) {
                     <div className="w-full flex justify-end pb-6 pr-5">
                       <Button
                         variant="outline"
-                        className={`border-blue-primary px-12 ${
+                        className={`border-blue-primary text-blue-primary font-light px-12 ${
                           currentLesson?.isCompleted ? 'bg-blue-primary text-white' : ''
                         }`}
                         onClick={currentLesson?.isCompleted ? handleNextLesson : handleMarkComplete}

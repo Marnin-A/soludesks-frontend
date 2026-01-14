@@ -37,10 +37,7 @@ export function QuizView({ quiz, onSubmit }: QuizViewProps) {
     <div className="bg-white rounded-xl shadow-sm border border-gray-100">
       {/* Quiz Header */}
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-bold text-gray-900">{quiz.title}</h2>
-        <p className="text-sm text-gray-500 mt-1">
-          {answeredCount} of {totalQuestions} questions answered • {quiz.totalPoints} total points
-        </p>
+        <h2 className="text-lg font-medium text-gray-900">{quiz.title}</h2>
       </div>
 
       {/* Questions */}
@@ -57,10 +54,10 @@ export function QuizView({ quiz, onSubmit }: QuizViewProps) {
       </div>
 
       {/* Submit Button */}
-      <div className="p-6 border-t border-gray-200 flex justify-center">
+      <div className="p-6 border-gray-200 flex justify-end">
         <Button
           onClick={handleSubmit}
-          className="px-16 py-3 rounded-full"
+          className="px-16 py-3 border-blue-primary text-blue-primary font-light"
           variant="outline"
         >
           Submit
