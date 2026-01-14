@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Soludesks - Learning Management System
 
-## Getting Started
+A modern, responsive Learning Management System (LMS) built with Next.js, featuring course management, assessments, and user progress tracking.
 
-First, run the development server:
+## 🚀 Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+[View Live Application](https://soludesks-frontend-five.vercel.app/)
+
+## 🛠️ Tech Stack
+
+### Core Framework
+- **Next.js 16.1.1** - React framework with App Router
+- **React 19.2.3** - UI library
+- **TypeScript 5** - Type-safe JavaScript
+
+### State Management
+- **Redux Toolkit 2.11.2** - State management
+- **RTK Query** - Data fetching and caching
+
+### Styling & UI
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Radix UI** - Accessible UI primitives
+- **React Icons 5.5.0** - Icon library
+- **Lucide React** - Additional icons
+- **Tailwind Typography** - Typography utilities
+
+### Development Tools
+- **ESLint 9** - Code linting
+- **TypeScript** - Type checking
+- **PostCSS** - CSS processing
+
+## 📁 Project Structure
+
+```
+soludesks-frontend/
+├── app/                          # Next.js App Router
+│   ├── api/                      # API routes
+│   │   └── courses/              # Course-related API endpoints
+│   ├── assessments/              # Assessments page
+│   ├── classes/                  # Classes page
+│   ├── courses/                  # Courses pages with dynamic routing
+│   │   └── [id]/                 # Course detail page
+│   │       └── lessons/          # Lesson pages
+│   │           └── [lessonId]/   # Individual lesson page
+│   ├── globals.css               # Global styles and Tailwind config
+│   ├── layout.tsx                # Root layout with Redux provider
+│   └── page.tsx                  # Home page
+├── components/                   # Reusable UI components
+│   ├── layout/                   # Layout components (Header, Sidebar)
+│   └── ui/                       # UI components (Button, Card, etc.)
+├── data/                         # Mock data and constants
+├── lib/                          # Utility functions
+├── public/                       # Static assets (images, icons)
+├── store/                        # Redux store configuration
+│   ├── services/                 # RTK Query API services
+│   └── slices/                   # Redux slices (user state)
+├── types/                        # TypeScript type definitions
+└── package.json                  # Dependencies and scripts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🏁 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Node.js** (version 18 or higher)
+- **npm**, **yarn**, **pnpm**, or **bun** package manager
 
-## Learn More
+### Installation
 
-To learn more about Next.js, take a look at the following resources:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Marnin-A/soludesks-frontend.git
+   cd soludesks-frontend
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install (recommended, that's what I use)
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **Start the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   # or
+   bun dev (recommended)
+   ```
 
-## Deploy on Vercel
+4. **Open your browser**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   Navigate to [http://localhost:3000](http://localhost:3000) to see the application.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📜 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## 🎨 Features
+
+### Core Functionality
+- **Course Management**: Browse and enroll in courses
+- **Lesson Progress Tracking**: Mark lessons as completed
+- **Interactive Quizzes**: Take assessments with multiple choice and short answer questions
+- **User Dashboard**: View enrolled courses and progress
+- **Student Management**: Track applicants and active learners
+
+### UI/UX Features
+- **Responsive Design**: Mobile-first approach with Tailwind CSS
+- **Accessibility**: Semantic HTML and proper ARIA labels
+- **Dark/Light Theme Support**: Built-in theme switching capability
+- **Loading States**: Smooth loading indicators
+
+### Technical Features
+- **Type Safety**: Full TypeScript implementation
+- **State Management**: Redux Toolkit with RTK Query
+- **API Integration**: RESTful API endpoints with mock data
+- **Component Architecture**: Reusable and composable components
+- **Performance**: Optimized with Next.js features (I used mostly client components to avoid complexity)
+---
