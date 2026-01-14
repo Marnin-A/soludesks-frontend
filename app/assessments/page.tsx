@@ -271,20 +271,20 @@ export default function AssessmentsPage() {
                 <tr key={assessment.id} className="border-b border-gray-50 last:border-0">
                   <td className="py-4">
                     <div>
-                      <p className="font-medium text-gray-900">{assessment.title}</p>
+                      <p className="font-medium text-main-text">{assessment.title}</p>
                       <p className="text-sm text-gray-500">{assessment.course}</p>
                     </div>
                   </td>
                   <td className="py-4">{getTypeBadge(assessment.type)}</td>
                   <td className="py-4">
                     <div className="text-sm">
-                      <p className="text-gray-900">{assessment.duration}</p>
+                      <p className="text-main-text">{assessment.duration}</p>
                       <p className="text-gray-500">{assessment.questions} questions</p>
                     </div>
                   </td>
                   <td className="py-4">
                     <div className="text-sm">
-                      <p className="text-gray-900">{formatDate(assessment.dueDate)}</p>
+                      <p className="text-main-text">{formatDate(assessment.dueDate)}</p>
                       <p className={`text-xs ${assessment.status === 'overdue' ? 'text-red-500' : 'text-gray-500'}`}>
                         {getDaysUntil(assessment.dueDate)}
                       </p>
@@ -294,7 +294,7 @@ export default function AssessmentsPage() {
                   <td className="py-4">
                     {assessment.score !== undefined ? (
                       <div className="text-sm">
-                        <p className="font-medium text-gray-900">{assessment.score}/{assessment.maxScore}</p>
+                        <p className="font-medium text-main-text">{assessment.score}/{assessment.maxScore}</p>
                         <p className="text-gray-500">
                           {assessment.attempts}/{assessment.maxAttempts} attempts
                         </p>

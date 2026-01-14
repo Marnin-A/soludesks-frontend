@@ -166,7 +166,7 @@ export default function LessonPage({ params }: LessonPageProps) {
 
                 {activeTab === 'reviews' && (
                   <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
-                    <h2 className="py-5 font-bold text-gray-900 px-6">Reviews & Feedbacks</h2>
+                    <h2 className="py-5 font-bold text-main-text px-6">Reviews & Feedbacks</h2>
                     <div className="h-px w-full bg-gray-200" />
 
                     {reviewsLoading ? (
@@ -178,7 +178,7 @@ export default function LessonPage({ params }: LessonPageProps) {
                       <div className="p-6">
                         {reviewsData?.stats && <RatingDistribution stats={reviewsData.stats} />}
                         <div className="mt-6">
-                          <h3 className="font-semibold text-gray-900 mb-2">
+                          <h3 className="font-semibold text-main-text mb-2">
                             Student Reviews ({reviewsData?.reviews?.length || 0})
                           </h3>
                           {reviewsData?.reviews && reviewsData.reviews.length > 0 ? (
@@ -249,12 +249,12 @@ export default function LessonPage({ params }: LessonPageProps) {
                 {/* Content */}
                 {activeTab === 'content' && (
                   <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
-                    <h2 className="py-5 font-bold text-gray-900 px-6">
+                    <h2 className="py-5 font-bold text-main-text px-6">
                       Lesson {currentLesson?.order} - {currentLesson?.title}
                     </h2>
                     <div className="h-px mb-5 w-full bg-gray-200" />
                     <div
-                      className="text-gray-600 leading-relaxed px-6 pb-[4.5rem]"
+                      className="text-main-text-2 font-normal leading-relaxed px-6 pb-10"
                       dangerouslySetInnerHTML={{ __html: currentLesson?.content || '' }}
                     />
                     <div className="w-full flex justify-end pb-6 pr-5">
@@ -275,7 +275,7 @@ export default function LessonPage({ params }: LessonPageProps) {
                 {/* Reviews/Feedbacks */}
                 {activeTab === 'reviews' && (
                   <div className="bg-white text-sm rounded-xl shadow-sm border border-gray-100">
-                    <h2 className="py-5 font-bold text-gray-900 px-6">Reviews & Feedbacks</h2>
+                    <h2 className="py-5 font-bold text-main-text px-6">Reviews & Feedbacks</h2>
                     <div className="h-px w-full bg-gray-200" />
 
                     {reviewsLoading ? (
@@ -291,7 +291,7 @@ export default function LessonPage({ params }: LessonPageProps) {
 
                         {/* Reviews List */}
                         <div className="mt-6">
-                          <h3 className="font-semibold text-gray-900 mb-2">
+                          <h3 className="font-semibold text-main-text mb-2">
                             Student Reviews ({reviewsData?.reviews?.length || 0})
                           </h3>
 
@@ -363,7 +363,7 @@ export default function LessonPage({ params }: LessonPageProps) {
                           href={`/courses/${courseId}/lessons/${lesson.id}`}
                           className={`flex items-center justify-between px-4 py-3 text-sm transition-colors ${
                             lesson.id === lessonId
-                              ? 'bg-blue-50 text-[var(--blue-primary-alpha)]'
+                              ? 'bg-blue-50 text-blue-primary-alpha'
                               : 'text-gray-600 hover:bg-gray-50'
                           }`}
                         >
@@ -379,7 +379,7 @@ export default function LessonPage({ params }: LessonPageProps) {
                           ) : (
                             <div
                               className={`h-6 w-6 rounded-full border shrink-0 ${
-                                lesson.id === lessonId ? 'border-[var(--blue-primary-alpha)]' : 'border-gray-300'
+                                lesson.id === lessonId ? 'border-blue-primary-alpha' : 'border-gray-300'
                               }`}
                             />
                           )}

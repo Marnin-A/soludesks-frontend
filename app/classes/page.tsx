@@ -243,14 +243,14 @@ export default function ClassesPage() {
                     <Image src={cls.instructorAvatar} alt={cls.instructor} fill className="object-cover" />
                   </div>
                   <div>
-                    <p className="font-medium text-sm text-gray-900">{cls.instructor}</p>
+                    <p className="font-medium text-sm text-main-text">{cls.instructor}</p>
                     <p className="text-xs text-gray-500">{cls.category}</p>
                   </div>
                 </div>
                 {getStatusBadge(cls.status)}
               </div>
 
-              <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{cls.title}</h3>
+              <h3 className="font-semibold text-main-text mb-2 line-clamp-2">{cls.title}</h3>
 
               <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
                 <div className="flex items-center gap-1">

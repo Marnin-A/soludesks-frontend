@@ -37,7 +37,7 @@ export function QuizView({ quiz, onSubmit }: QuizViewProps) {
     <div className="bg-white rounded-xl shadow-sm border border-gray-100">
       {/* Quiz Header */}
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-lg font-medium text-gray-900">{quiz.title}</h2>
+        <h2 className="text-lg font-medium text-main-text">{quiz.title}</h2>
       </div>
 
       {/* Questions */}

@@ -2,7 +2,6 @@ export { Sidebar } from './layout/Sidebar';
 export { Header } from './layout/Header';
 
 export { Badge } from './ui/Badge';
-export { Breadcrumb } from './ui/Breadcrumb';
 export { Button } from './ui/Button';
 export { CourseCard } from './ui/CourseCard';
 export { Input } from './ui/Input';

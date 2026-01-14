@@ -47,7 +47,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-4 mb-1">
-            <h4 className="font-medium text-gray-900">{review.studentName}</h4>
+            <h4 className="font-medium text-main-text">{review.studentName}</h4>
             <span className="text-xs text-gray-400 shrink-0">{formatDate(review.createdAt)}</span>
           </div>
           <div className="mb-2">

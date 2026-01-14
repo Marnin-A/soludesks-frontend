@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { mockLessonReviews } from '@/data/mockData';
+import { mockReviews } from '@/data/mockData';
+import { Review } from '@/types';
 
 export async function GET(
   request: Request,
@@ -8,7 +9,7 @@ export async function GET(
   await new Promise(resolve => setTimeout(resolve, 200));
 
   const { id, lessonId } = await params;
-  const reviews = mockLessonReviews.filter(review => review.courseId === id && review.lessonId === lessonId);
+  const reviews = mockReviews.filter((review: Review) => review.courseId === id && review.lessonId === lessonId);
 
   return NextResponse.json({
     success: true,

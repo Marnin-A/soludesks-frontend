@@ -29,7 +29,7 @@ export function QuizQuestion({
           {questionNumber}
         </div>
         <div className="flex-1">
-          <h3 className="font-medium text-gray-900">{question.question}</h3>
+          <h3 className="font-medium text-main-text">{question.question}</h3>
           <div className="flex items-center gap-2 mt-1 text-sm text-main-text-2">
             <span className='border rounded-md px-2 py-0.5 text-xxs font-light text-base text-main-text'>{isMultipleChoice ? 'Multiple Choice' : 'Short answer'}</span>
       

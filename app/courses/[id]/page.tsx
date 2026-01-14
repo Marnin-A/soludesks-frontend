@@ -2,7 +2,6 @@
 
 import { use, useState } from 'react';
 import Image from 'next/image';
-import { HiOutlineUsers, HiOutlineUserGroup, HiOutlineMail } from 'react-icons/hi';
 import { useGetCourseByIdQuery, useGetApplicantsQuery } from '@/store/services/api';
 import { StatCard } from '@/components/ui/StatCard';
 import { Badge } from '@/components/ui/Badge';
@@ -11,7 +10,6 @@ import { Table } from '@/components/ui/Table';
 import { Student } from '@/types';
 import Link from 'next/link';
 import { Pagination } from '@/components/ui/Pagination';
-import { useRouter } from 'next/navigation';
 
 interface CourseDetailPageProps {
   params: Promise<{ id: string }>;
@@ -28,7 +26,6 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
   const { id } = use(params);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-  const router = useRouter();
 
   const { data: course, isLoading: courseLoading } = useGetCourseByIdQuery(id);
   const { data: applicantsData, isLoading: applicantsLoading } = useGetApplicantsQuery({
@@ -54,7 +51,7 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
   if (!course) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <p className="text-text-gray">Course not found</p>
+        <p className="text-main-text-2">Course not found</p>
       </div>
     );
   }
@@ -72,7 +69,7 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
               <Image src="/icons/Person.svg" alt="user" width={24} height={24} className="w-6 h-6" />
             )}
           </div>
-          <span className="font-medium text-text-dark">{student.name}</span>
+          <span className="font-normal text-main-text-2">{student.name}</span>
         </div>
       ),
     },
@@ -88,7 +85,7 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
       key: 'actions',
       header: 'Actions',
       render: () => (
-        <button className="rounded-lg p-2 text-[var(--blue-primary)] hover:bg-[var(--blue-primary)]/10">
+        <button className="rounded-lg p-2 text-blue-primary hover:bg-blue-primary/10">
           <Image src="/icons/message-text.svg" alt="message" width={24} height={24} className="w-6 h-6" />
         </button>
       ),
@@ -103,7 +100,7 @@ export default function CourseDetailPage({ params }: CourseDetailPageProps) {
           <Link href="/" className="rounded-full h-11 w-11 p-0 flex items-center justify-center bg-border-gray text-text-dark hover:bg-border-gray/0.8'">
             <Image src="/icons/Line arrow-left.svg" alt="back to courses" width={24} height={24} />
           </Link>
-          <h1 className="text-2xl font-bold text-text-dark">{course.title}</h1>
+          <h1 className="text-2xl font-medium text-main-text">{course.title}</h1>
           <Badge className="py-2 px-5" variant="secondary">{course.category}</Badge>
         </div>
         <Link href={`/courses/${id}/lessons/1`}>
